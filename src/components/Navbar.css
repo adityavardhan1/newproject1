@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar Container */
+.navbar {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Aligns left and right sections */
+  padding: 10px 20px;
+  width: 100%;
+}
+
+/* Left Section */
+.navbar-left h1 {
+  color: white;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Right Section */
+.navbar-right {
+  display: flex;
+  gap: 0px; /* Reduces space between navbar items */
+}
+
+/* Navbar Links */
+.navbar-right a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px 12px;
+}
+
+.navbar-right a:hover {
+  /* background-color: #0056b3; */
+  border-radius: 5px;
+  border-color: white;
+}
+
+
+.content {
+  padding: 20px;
+}
+
+
+

@@ -1,100 +1,298 @@
 .main-container {
   text-align: center;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .content-wrapper {
-  display: flex;
-  width: 100%;
-  max-width: 1500px;
-  margin: 20px auto;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .sip-calculator {
-  display: flex;
-  flex: 1;
-  padding: 20px;
-  border-radius: 5px;
-  font-family: sans-serif;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
 }
 
 .content-left {
-  flex: 0 0 400px;
-  padding-right: 20px;
-  margin: 0 auto;
-  text-align: center;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
 
-.image-right {
-  flex: 0 0 300px;
-  text-align: right;
-}
-
-.image-right img {
-  width: 100%;
-  height: auto;
-}
-
-.sidebar-right {
-  width: 300px;
-  text-align: left;
-  padding: 20px;
-  border-left: 1px solid #ccc;
-  border-radius: 5px;
-  margin-left: 20px;
-}
-
-.sidebar-right h3 {
-  margin-bottom: 10px;
-}
-
-.sidebar-right ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar-right li {
-  margin-bottom: 5px;
-}
-
-.sip-calculator h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-}
-
-.sip-calculator p {
-  margin-bottom: 15px;
+h1.center {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.5em;
 }
 
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #34495e;
+  font-weight: 500;
+  font-size: 0.95em;
 }
 
 input,
 select {
-  width: calc(100% - 12px);
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #dfe6e9;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  gap: 15px;
+  margin-top: 25px;
 }
 
 .calculate-button,
 .reset-button {
-  padding: 10px 15px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 0 5px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 120px;
 }
 
 .calculate-button {
   background-color: #007bff;
-  color: #fff;
+  color: white;
+}
+
+.calculate-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.reset-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.reset-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+.result-container {
+  margin-top: 25px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.result-container p {
+  margin: 12px 0;
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 1.1em;
+}
+
+.sidebar-right {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.sidebar-content h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.sidebar-content p {
+  color: #5d6d7e;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.reverse-sip-button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 15px 0;
+  width: 100%;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.reverse-sip-button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.reverse-sip-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.reverse-sip-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.inflation-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 15px 0;
+  width: 100%;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.inflation-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.inflation-section {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+}
+
+.inflation-results {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.inflation-results p {
+  margin: 10px 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #2c3e50;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .sip-calculator {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar-right {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 10px;
+  }
+
+  .content-left,
+  .reverse-sip-content {
+    padding: 20px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .calculate-button,
+  .reset-button,
+  .reverse-sip-button,
+  .inflation-button {
+    width: 100%;
+  }
+
+  h1.center {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-container {
+    padding: 10px;
+  }
+
+  h1.center {
+    font-size: 1.8em;
+  }
+
+  .reverse-sip-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  input,
+  select {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

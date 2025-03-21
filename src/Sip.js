@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Sip.css';
+import ReverseSipCalculator from './components/ReverseSip';
 
 function SIPCalculator() {
   const [frequency, setFrequency] = useState('monthly');
@@ -10,21 +11,15 @@ function SIPCalculator() {
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [totalDeposited, setTotalDeposited] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [showInflationAdjusted, setShowInflationAdjusted] = useState(false);
+  const [showReverseSip, setShowReverseSip] = useState(false);
 
   const calculateSip = () => {
     const parsedInvestment = parseFloat(investment.replace(/,/g, "")) || 0;
     const parsedRate = parseFloat(rate) || 0;
     const parsedTenure = parseFloat(tenure) || 0;
 
-    let schedule;
-    switch (frequency) {
-      case 'monthly':
-        schedule = 12;
-        break;
-      // Add other frequency options if needed
-      default:
-        schedule = 12;
-    }
+    let schedule = 12;  // Monthly
 
     const r = parsedRate / 100 / schedule;
     const n = parsedTenure * schedule;
@@ -38,25 +33,27 @@ function SIPCalculator() {
     setShowResult(true);
   };
 
-  const formatNumber = (num) => {
-    return num.toLocaleString('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+  const formatAmount = (num) => {
+    if (num >= 10000000) {
+      return `₹${(num / 10000000).toFixed(2)} Crores`;
+    } else {
+      return `₹${(num / 100000).toFixed(2)} Lakhs`;
+    }
+  };
+
+  const calculateInflationAdjusted = (amount) => {
+    const inflationRate = 0.07;
+    const years = parseFloat(tenure) || 0;
+    const adjustedAmount = amount / Math.pow(1 + inflationRate, years);
+    return formatAmount(adjustedAmount);
   };
 
   const handleReset = () => {
-    setInvestment('10000');
+    setInvestment('');
     setRate('12');
     setTenure('10');
     setShowResult(false);
-  };
-
-  const formatLakhs = (num) => {
-    const lakhs = (num / 100000).toFixed(2);
-    return `${lakhs} Lakhs`;
+    setShowInflationAdjusted(false);
   };
 
   return (
@@ -66,10 +63,7 @@ function SIPCalculator() {
         <div className="sip-calculator">
           <div className="content-left">
             <h2>Systematic Investment Plan (SIP) Calculator</h2>
-            <p>
-              Wish to invest periodically? Calculate the amount of wealth that you
-              can generate using our SIP Calculator.
-            </p>
+            <p>Calculate your future wealth using our SIP Calculator.</p>
 
             <div className="input-group">
               <label htmlFor="frequency">Frequency of Investment:</label>
@@ -79,7 +73,6 @@ function SIPCalculator() {
                 onChange={(e) => setFrequency(e.target.value)}
               >
                 <option value="monthly">Monthly</option>
-                {/* Add other frequency options if needed */}
               </select>
             </div>
 
@@ -117,50 +110,59 @@ function SIPCalculator() {
             </div>
 
             <div className="button-container">
-              <button className="calculate-button" onClick={calculateSip}>
-                Plan My Wealth
-              </button>
-              <button className="reset-button" onClick={handleReset}>
-                Reset
-              </button>
+              <button className="calculate-button" onClick={calculateSip}>Plan My Wealth</button>
+              <button className="reset-button" onClick={handleReset}>Reset</button>
             </div>
 
             {showResult && (
               <div className="result-container">
-                <p>
-                  Your Future Value: {formatNumber(futureValue)} (
-                  {formatLakhs(futureValue)})
-                </p>
-                <p>
-                  Total Earnings: {formatNumber(totalEarnings)} (
-                  {formatLakhs(totalEarnings)})
-                </p>
-                <p>
-                  Total Amount Deposited: {formatNumber(totalDeposited)} (
-                  {formatLakhs(totalDeposited)})
-                </p>
+                <p>Your Future Value: {formatAmount(futureValue)}</p>
+                <p>Total Earnings: {formatAmount(totalEarnings)}</p>
+                <p>Total Amount Deposited: {formatAmount(totalDeposited)}</p>
               </div>
             )}
           </div>
 
-          <div className="image-right">
-            <img
-              src="/calculator/craiyon_173453_Visualize_business_growth_through_a_series_of_ascending_steps_with_charts_and_coins__multicolor.png"
-              alt="Money Bag"
-            />
-          </div>
-        </div>
-        <div className="sidebar-right">
-          <div className="sidebar-content">
-            <h3>What is SIP?</h3>
-            <p>Systematic Investment Plan (SIP) is a smart financial planning tool that helps you to create wealth, by investing small sums of money every month, over a period of time.</p>
-            <h3>Other Options</h3>
-            <ul>
-              <li><a href="#">Benefits of SIP</a></li>
-              <li><a href="#">Types of SIP</a></li>
-              <li><a href="#">Tax Implications</a></li>
-              <li><a href="#">Tips for SIP</a></li>
-            </ul>
+          {showReverseSip && <ReverseSipCalculator onClose={() => setShowReverseSip(false)} />}
+
+          <div className="sidebar-right">
+            <div className="sidebar-content">
+              <h3>What is SIP?</h3>
+              <p>Systematic Investment Plan (SIP) is a smart financial planning tool that helps you to create wealth, by investing small sums of money every month, over a period of time.</p>
+              
+              <button 
+                className="reverse-sip-button"
+                onClick={() => setShowReverseSip(!showReverseSip)}
+              >
+                {showReverseSip ? 'Hide' : 'Show'} Target Amount Calculator
+              </button>
+
+              {showResult && (
+                <div className="inflation-section">
+                  <button 
+                    className="inflation-button"
+                    onClick={() => setShowInflationAdjusted(!showInflationAdjusted)}
+                  >
+                    {showInflationAdjusted ? "Hide" : "Show"} Inflation Adjusted Value
+                  </button>
+                  
+                  {showInflationAdjusted && (
+                    <div className="inflation-results">
+                      <p>Inflation Adjusted Future Value (7% p.a.):</p>
+                      <p>{calculateInflationAdjusted(futureValue)}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <h3>Other Options</h3>
+              <ul>
+                <li><a href="#">Benefits of SIP</a></li>
+                <li><a href="#">Types of SIP</a></li>
+                <li><a href="#">Tax Implications</a></li>
+                <li><a href="#">Tips for SIP</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

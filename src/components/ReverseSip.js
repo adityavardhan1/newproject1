@@ -2,16 +2,29 @@ import React, { useState } from 'react';
 import '../Sip.css';
 
 function ReverseSipCalculator({ onClose }) {
-  const [targetAmount, setTargetAmount] = useState('');
-  const [rate, setRate] = useState('12');
-  const [tenure, setTenure] = useState('10');
-  const [requiredSip, setRequiredSip] = useState(0);
-  const [showResult, setShowResult] = useState(false);
+  const initialState = {
+    targetAmount: '',
+    rate: '',
+    tenure: '',
+    requiredSip: 0,
+    showResult: false
+  };
+
+  const [targetAmount, setTargetAmount] = useState(initialState.targetAmount);
+  const [rate, setRate] = useState(initialState.rate);
+  const [tenure, setTenure] = useState(initialState.tenure);
+  const [requiredSip, setRequiredSip] = useState(initialState.requiredSip);
+  const [showResult, setShowResult] = useState(initialState.showResult);
 
   const calculateRequiredSip = () => {
     const parsedTarget = parseFloat(targetAmount.replace(/,/g, "")) || 0;
     const parsedRate = parseFloat(rate) || 0;
     const parsedTenure = parseFloat(tenure) || 0;
+
+    if (parsedTarget <= 0 || parsedRate <= 0 || parsedTenure <= 0) {
+      alert('Please enter valid positive numbers for all fields');
+      return;
+    }
 
     const monthlyRate = parsedRate / (12 * 100);
     const months = parsedTenure * 12;
@@ -25,10 +38,11 @@ function ReverseSipCalculator({ onClose }) {
   };
 
   const handleReset = () => {
-    setTargetAmount('');
-    setRate('12');
-    setTenure('10');
-    setShowResult(false);
+    setTargetAmount(initialState.targetAmount);
+    setRate(initialState.rate);
+    setTenure(initialState.tenure);
+    setRequiredSip(initialState.requiredSip);
+    setShowResult(initialState.showResult);
   };
 
   return (
@@ -46,6 +60,7 @@ function ReverseSipCalculator({ onClose }) {
             placeholder="Ex: 1000000"
             value={targetAmount}
             onChange={(e) => setTargetAmount(e.target.value)}
+            autoComplete="off"
           />
         </div>
 
@@ -57,6 +72,7 @@ function ReverseSipCalculator({ onClose }) {
             placeholder="Ex: 12"
             value={rate}
             onChange={(e) => setRate(e.target.value)}
+            autoComplete="off"
           />
         </div>
 
@@ -68,11 +84,16 @@ function ReverseSipCalculator({ onClose }) {
             placeholder="Ex: 10"
             value={tenure}
             onChange={(e) => setTenure(e.target.value)}
+            autoComplete="off"
           />
         </div>
 
         <div className="button-container">
-          <button className="calculate-button" onClick={calculateRequiredSip}>
+          <button 
+            className="calculate-button" 
+            onClick={calculateRequiredSip}
+            disabled={!targetAmount || !rate || !tenure}
+          >
             Calculate Required SIP
           </button>
           <button className="reset-button" onClick={handleReset}>
@@ -80,7 +101,7 @@ function ReverseSipCalculator({ onClose }) {
           </button>
         </div>
 
-        {showResult && (
+        {showResult && targetAmount && rate && tenure && (
           <div className="result-container">
             <p>Required Monthly SIP: ₹{Math.round(requiredSip).toLocaleString('en-IN')}</p>
             <p>Target Amount: ₹{parseFloat(targetAmount).toLocaleString('en-IN')}</p>

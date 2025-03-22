@@ -25,6 +25,22 @@ function SIPCalculator() {
     }
 
     let schedule = 12;  // Monthly
+    switch (frequency) {
+      case 'monthly':
+        schedule = 12;
+        break;
+      case 'quarterly':
+        schedule = 4;
+        break;
+      case 'half-yearly':
+        schedule = 2;
+        break;
+      case 'annually':
+        schedule = 1;
+        break;
+      default:
+        schedule = 12;
+    }
 
     const r = parsedRate / 100 / schedule;
     const n = parsedTenure * schedule;
@@ -86,6 +102,9 @@ function SIPCalculator() {
                 onChange={(e) => handleInputChange(e.target.value, setFrequency)}
               >
                 <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="half-yearly">Half-Yearly</option>
+                <option value="annually">Annually</option>
               </select>
             </div>
 

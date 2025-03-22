@@ -193,14 +193,6 @@ function SIPCalculator() {
               >
                 {showReverseSip ? 'Hide' : 'Show'} Target Amount Calculator
               </button>
-
-              <h3>Other Options</h3>
-              <ul>
-                <li><a href="#">Benefits of SIP</a></li>
-                <li><a href="#">Types of SIP</a></li>
-                <li><a href="#">Tax Implications</a></li>
-                <li><a href="#">Tips for SIP</a></li>
-              </ul>
             </div>
           </div>
           

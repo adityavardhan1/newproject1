@@ -49,7 +49,7 @@ function ReverseSipCalculator({ onClose }) {
     <div className="reverse-sip-modal">
       <div className="reverse-sip-content">
         <button className="close-button" onClick={onClose}>&times;</button>
-        <h2>Target Amount SIP Calculator</h2>
+        <h2>Target SIP Amount Calculator</h2>
         <p>Calculate required monthly SIP for your target amount</p>
 
         <div className="input-group">

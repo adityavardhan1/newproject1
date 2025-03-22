@@ -191,7 +191,7 @@ function SIPCalculator() {
                 className="reverse-sip-button"
                 onClick={() => setShowReverseSip(!showReverseSip)}
               >
-                {showReverseSip ? 'Hide' : 'Show'} Target Amount Calculator
+                {showReverseSip ? 'Know Your Required SIP Amount' : 'Know Your Required SIP Amount'}
               </button>
             </div>
           </div>

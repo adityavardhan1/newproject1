@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <h1 className="Logo">SochSahi</h1>
+        <h1 className="Logo">NitiDhan</h1>
       </div>
       <div className="navbar-right">
         <Link to="/">Home</Link>

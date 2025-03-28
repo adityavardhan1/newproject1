@@ -154,40 +154,43 @@ select:focus {
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.sidebar-content h3 {
-  color: #2c3e50;
+.sidebar-heading {
   margin-bottom: 15px;
-  font-size: 1.3em;
+  color: #333;
+  font-size: 16px;
+  text-align: center;
 }
 
-.sidebar-content p {
-  color: #5d6d7e;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.reverse-sip-button {
-  background-color: #28a745;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 15px 0;
+.reverse-sip-button,
+.cagr-button,
+.time-button {
+  display: block;
   width: 100%;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
-.reverse-sip-button:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
+.reverse-sip-button:hover,
+.cagr-button:hover,
+.time-button:hover {
+  background-color: #45a049;
 }
 
 /* Modal Styles */
-.reverse-sip-modal {
+.reverse-sip-modal,
+.cagr-modal,
+.time-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -200,7 +203,9 @@ select:focus {
   z-index: 1000;
 }
 
-.reverse-sip-content {
+.reverse-sip-content,
+.cagr-content,
+.time-content {
   background: white;
   padding: 30px;
   border-radius: 12px;
@@ -226,6 +231,13 @@ select:focus {
 
 .close-button:hover {
   color: #333;
+}
+
+.note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+  font-style: italic;
 }
 
 /* Responsive Styles */
@@ -263,7 +275,9 @@ select:focus {
     font-size: 2em;
   }
 
-  .reverse-sip-content {
+  .reverse-sip-content,
+  .cagr-content,
+  .time-content {
     width: 95%;
     padding: 20px;
   }

@@ -7,7 +7,8 @@ function ReverseSipCalculator({ onClose }) {
     rate: '',
     tenure: '',
     requiredSip: 0,
-    showResult: false
+    showResult: false,
+    isFirstCalculation: true
   };
 
   const [targetAmount, setTargetAmount] = useState(initialState.targetAmount);
@@ -15,26 +16,47 @@ function ReverseSipCalculator({ onClose }) {
   const [tenure, setTenure] = useState(initialState.tenure);
   const [requiredSip, setRequiredSip] = useState(initialState.requiredSip);
   const [showResult, setShowResult] = useState(initialState.showResult);
+  const [isFirstCalculation, setIsFirstCalculation] = useState(initialState.isFirstCalculation);
 
-  const calculateRequiredSip = () => {
-    const parsedTarget = parseFloat(targetAmount.replace(/,/g, "")) || 0;
-    const parsedRate = parseFloat(rate) || 0;
-    const parsedTenure = parseFloat(tenure) || 0;
+  const calculateRequiredSip = (tAmount = targetAmount, tRate = rate, tTenure = tenure, isButtonClick = false) => {
+    const parsedTarget = parseInt(tAmount.replace(/,/g, "")) || 0;
+    const parsedRate = parseFloat(tRate) || 0;
+    const parsedTenure = parseInt(tTenure) || 1; // Default to 1 year if empty/0
 
-    if (parsedTarget <= 0 || parsedRate <= 0 || parsedTenure <= 0) {
-      alert('Please enter valid positive numbers for all fields');
-      return;
+    if (parsedTarget > 0 && parsedRate > 0) { // Remove tenure check
+      const monthlyRate = parsedRate / (12 * 100);
+      const months = parsedTenure * 12;
+      
+      const numerator = parsedTarget;
+      const denominator = (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate * (1 + monthlyRate);
+      const sipAmount = numerator / denominator;
+
+      setRequiredSip(sipAmount);
+      
+      if (isButtonClick && isFirstCalculation) {
+        setShowResult(true);
+        setIsFirstCalculation(false);
+      }
     }
+  };
 
-    const monthlyRate = parsedRate / (12 * 100);
-    const months = parsedTenure * 12;
-    
-    const numerator = parsedTarget;
-    const denominator = (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate * (1 + monthlyRate);
-    const sipAmount = numerator / denominator;
+  const handleInputChange = (value, setter, type) => {
+    if (/^\d*$/.test(value)) {
+      setter(value);
 
-    setRequiredSip(sipAmount);
-    setShowResult(true);
+      if (!isFirstCalculation) {
+        calculateRequiredSip(
+          type === 'targetAmount' ? value : targetAmount,
+          type === 'rate' ? value : rate,
+          type === 'tenure' ? (value || '1') : tenure, // Use '1' as fallback
+          false
+        );
+      }
+    }
+  };
+
+  const handleCalculateClick = () => {
+    calculateRequiredSip(targetAmount, rate, tenure, true);
   };
 
   const handleReset = () => {
@@ -43,6 +65,7 @@ function ReverseSipCalculator({ onClose }) {
     setTenure(initialState.tenure);
     setRequiredSip(initialState.requiredSip);
     setShowResult(initialState.showResult);
+    setIsFirstCalculation(initialState.isFirstCalculation);
   };
 
   return (
@@ -59,7 +82,7 @@ function ReverseSipCalculator({ onClose }) {
             id="targetAmount"
             placeholder="Ex: 1000000"
             value={targetAmount}
-            onChange={(e) => setTargetAmount(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, setTargetAmount, 'targetAmount')}
             autoComplete="off"
           />
         </div>
@@ -71,7 +94,7 @@ function ReverseSipCalculator({ onClose }) {
             id="rate"
             placeholder="Ex: 12"
             value={rate}
-            onChange={(e) => setRate(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, setRate, 'rate')}
             autoComplete="off"
           />
         </div>
@@ -83,30 +106,25 @@ function ReverseSipCalculator({ onClose }) {
             id="tenure"
             placeholder="Ex: 10"
             value={tenure}
-            onChange={(e) => setTenure(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value, setTenure, 'tenure')}
             autoComplete="off"
           />
         </div>
 
         <div className="button-container">
-          <button 
-            className="calculate-button" 
-            onClick={calculateRequiredSip}
-            disabled={!targetAmount || !rate || !tenure}
-          >
+          <button className="calculate-button" onClick={handleCalculateClick} disabled={!targetAmount || !rate || !tenure}>
             Calculate Required SIP
           </button>
-          <button className="reset-button" onClick={handleReset}>
-            Reset
-          </button>
+          <button className="reset-button" onClick={handleReset}>Reset</button>
         </div>
 
-        {showResult && targetAmount && rate && tenure && (
+        {showResult && targetAmount && rate && (
           <div className="result-container">
             <p>Required Monthly SIP: ₹{Math.round(requiredSip).toLocaleString('en-IN')}</p>
-            <p>Target Amount: ₹{parseFloat(targetAmount).toLocaleString('en-IN')}</p>
-            <p>Time Period: {tenure} years</p>
+            <p>Target Amount: ₹{parseInt(targetAmount).toLocaleString('en-IN')}</p>
+            <p>Time Period: {tenure || 1} years</p>
             <p>Expected Return: {rate}% p.a.</p>
+            <p className="note">This is the required monthly investment needed to reach your target amount at the expected rate of return.</p>
           </div>
         )}
       </div>

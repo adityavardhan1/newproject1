@@ -303,3 +303,72 @@ select:focus {
     padding: 10px;
   }
 }
+
+.lumpsum-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.lumpsum-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;  /* Add this line */
+}
+
+.calculator-box {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.lumpsum-container h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-align: center;  /* Add this line */
+}
+
+.lumpsum-container h2 {
+  text-align: center;  /* Add this line */
+  margin-bottom: 15px;
+}
+
+/* Common heading styles */
+h1.center,
+.lumpsum-container h1,
+.reverse-sip-content h1,
+.cagr-content h1 {
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+h2,
+.lumpsum-container h2,
+.reverse-sip-content h2,
+.cagr-content h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+
+p,
+.lumpsum-container p,
+.reverse-sip-content p,
+.cagr-content p {
+  color: #34495e;
+  margin-bottom: 20px;
+  font-size: 1em;
+  line-height: 1.5;
+  text-align: center;
+}

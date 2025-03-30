@@ -16,7 +16,11 @@ export default function Navbar() {
 
   const calculators = [
     { name: 'SIP Growth Calculator', path: './Calculator/Sip' },
-    { name: 'Lumpsum Calculator', path: '/./Calculator/lumpsum' }
+    { name: 'Lumpsum Calculator', path: '/./Calculator/lumpsum' },
+    { name: 'SIP Top Up Calculator', path: './Calculator/SIPtopUp' },
+    { name: 'Asset Future Value Calculator', path: './Calculator/asset' },
+    { name: 'Time Duration Calculator - One Time Investment', path: './Calculator/onetime' },
+    { name: 'Time Duration Calculator - Regular Investment', path: './Calculator/regular' }
   ];
 
   const handleCalculatorClick = () => {

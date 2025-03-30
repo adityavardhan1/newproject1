@@ -1,42 +1,47 @@
 import React, { useState } from 'react';
 import './Sip.css';
-import ReverseSipCalculator from './components/ReverseSip';
-import CagrCalculator from './components/CagrCalculator';
-import TimeCalculator from './components/TimeCalculator';
 
-function SIPCalculator() {
+function SIPTopUpCalculator() {
   const [state, setState] = useState({
-    frequency: 'monthly',
     investment: '',
     rate: '',
     tenure: '',
+    topUpAmount: '',
+    topUpFrequency: 'yearly',
     futureValue: 0,
     totalEarnings: 0,
     totalDeposited: 0,
     showResult: false,
-    showInflationAdjusted: false,
-    showReverseSip: false,
-    showCagrCalculator: false,
-    showTimeCalculator: false
+    showInflationAdjusted: false
   });
 
-  const calculateSip = () => {
+  const calculateTopUpSip = () => {
     const parsedInvestment = parseFloat(state.investment.replace(/,/g, "")) || 0;
     const parsedRate = parseFloat(state.rate) || 0;
     const parsedTenure = parseFloat(state.tenure) || 0;
+    const parsedTopUpAmount = parseFloat(state.topUpAmount) || 0;
 
-    const schedule = 12; // Monthly
-    const r = parsedRate / 100 / schedule;
-    const n = parsedTenure * schedule;
-    const a = parsedInvestment * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-    const totalDepositedCalc = parsedInvestment * n;
-    const totalEarningsCalc = a - totalDepositedCalc;
+    let futureValue = 0;
+    let totalDeposited = 0;
+    let monthlyInvestment = parsedInvestment;
+    const monthlyRate = parsedRate / 12 / 100;
+
+    for (let year = 0; year < parsedTenure; year++) {
+      for (let month = 0; month < 12; month++) {
+        futureValue = (futureValue + monthlyInvestment) * (1 + monthlyRate);
+        totalDeposited += monthlyInvestment;
+      }
+      // Apply top-up at the beginning of each year
+      if (state.topUpFrequency === 'yearly') {
+        monthlyInvestment += parsedTopUpAmount;
+      }
+    }
 
     setState(prev => ({
       ...prev,
-      futureValue: a,
-      totalEarnings: totalEarningsCalc,
-      totalDeposited: totalDepositedCalc,
+      futureValue,
+      totalEarnings: futureValue - totalDeposited,
+      totalDeposited,
       showResult: true
     }));
   };
@@ -55,54 +60,55 @@ function SIPCalculator() {
 
   const handleReset = () => {
     setState({
-      frequency: 'monthly',
       investment: '',
       rate: '',
       tenure: '',
+      topUpAmount: '',
+      topUpFrequency: 'yearly',
       futureValue: 0,
       totalEarnings: 0,
       totalDeposited: 0,
       showResult: false,
-      showInflationAdjusted: false,
-      showReverseSip: false,
-      showCagrCalculator: false,
-      showTimeCalculator: false
+      showInflationAdjusted: false
     });
   };
 
   const handleInputChange = (value, field) => {
-    setState(prev => ({ ...prev, [field]: value }));
+    if (/^\d*\.?\d*$/.test(value)) {
+      setState(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   return (
     <div className="main-container">
-      <h1 className="center">SIP Calculator</h1>
+      <h1 className="center">SIP Top-up Calculator</h1>
       <div className="content-wrapper">
         <div className="sip-calculator">
           <div className="content-left">
             <div className="calculator-box">
-              <h2>Systematic Investment Plan (SIP) Calculator</h2>
-              <p className="calculator-intro">Calculate your future wealth using our SIP Calculator.</p>
+              <h2>SIP with Annual Top-up Calculator</h2>
+              <p className="calculator-intro">Calculate your future wealth with regular SIP top-ups.</p>
 
               <div className="input-group">
-                <label htmlFor="frequency">Frequency of Investment:</label>
-                <select
-                  id="frequency"
-                  value={state.frequency}
-                  onChange={(e) => handleInputChange(e.target.value, 'frequency')}
-                >
-                  <option value="monthly">Monthly</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <label htmlFor="investment">Monthly Investment Amount *</label>
+                <label htmlFor="investment">Monthly SIP Amount *</label>
                 <input
                   type="text"
                   id="investment"
                   placeholder="Ex: 10000"
                   value={state.investment}
                   onChange={(e) => handleInputChange(e.target.value, 'investment')}
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="topUpAmount">Yearly Top-up Amount *</label>
+                <input
+                  type="text"
+                  id="topUpAmount"
+                  placeholder="Ex: 1000"
+                  value={state.topUpAmount}
+                  onChange={(e) => handleInputChange(e.target.value, 'topUpAmount')}
                   autoComplete="off"
                 />
               </div>
@@ -134,8 +140,8 @@ function SIPCalculator() {
               <div className="button-container">
                 <button 
                   className="calculate-button" 
-                  onClick={calculateSip}
-                  disabled={!state.investment || !state.rate || !state.tenure}
+                  onClick={calculateTopUpSip}
+                  disabled={!state.investment || !state.rate || !state.tenure || !state.topUpAmount}
                 >
                   Calculate
                 </button>
@@ -148,7 +154,7 @@ function SIPCalculator() {
                 <div className="result-container">
                   <p>Future Value: {formatAmount(state.futureValue)}</p>
                   <p>Total Earnings: {formatAmount(state.totalEarnings)}</p>
-                  <p>Total Amount Deposited: {formatAmount(state.totalDeposited)}</p>
+                  <p>Total Amount Invested: {formatAmount(state.totalDeposited)}</p>
                   <button 
                     className="inflation-button" 
                     onClick={() => setState(prev => ({ 
@@ -170,55 +176,24 @@ function SIPCalculator() {
           </div>
 
           <div className="sidebar-right">
-            <h3 className="sidebar-heading">Already know your goal amount?</h3>
-            <button 
-              className="reverse-sip-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showReverseSip: !prev.showReverseSip 
-              }))}
-            >
-              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Know Your Required Investment'}
-            </button>
-            <button 
-              className="cagr-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showCagrCalculator: !prev.showCagrCalculator 
-              }))}
-            >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Know Your Required CAGR'}
-            </button>
-            <button 
-              className="time-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showTimeCalculator: !prev.showTimeCalculator 
-              }))}
-            >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Know Your Required Time'}
-            </button>
+            <h3 className="sidebar-heading">What is SIP Top-up?</h3>
+            <div className="sidebar-content">
+              <p>
+                SIP Top-up is a facility that allows you to increase your SIP investment amount 
+                periodically. This helps you to invest more as your income grows over time.
+              </p>
+              <ul>
+                <li>Helps create larger corpus</li>
+                <li>Matches growing income</li>
+                <li>Better returns potential</li>
+                <li>Disciplined investing</li>
+              </ul>
+            </div>
           </div>
         </div>
-
-        {state.showReverseSip && (
-          <ReverseSipCalculator 
-            onClose={() => setState(prev => ({ ...prev, showReverseSip: false }))} 
-          />
-        )}
-        {state.showCagrCalculator && (
-          <CagrCalculator 
-            onClose={() => setState(prev => ({ ...prev, showCagrCalculator: false }))} 
-          />
-        )}
-        {state.showTimeCalculator && (
-          <TimeCalculator 
-            onClose={() => setState(prev => ({ ...prev, showTimeCalculator: false }))} 
-          />
-        )}
       </div>
     </div>
   );
 }
 
-export default SIPCalculator;
+export default SIPTopUpCalculator;

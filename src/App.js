@@ -13,6 +13,7 @@ import AskUs from './pages/AskUs';
 import ContactUs from './pages/ContactUs';
 import SipCalculator from './Sip';
 import LumpsumCalculator from './Lumpsum';
+import SIPTopUpCalculator from './SipTopUp';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/Calculator" element={<Calulator />} />
           <Route path="/Calculator/Sip" element={<SipCalculator />} />
           <Route path="/Calculator/Lumpsum" element={<LumpsumCalculator />} />
+          <Route path="/Calculator/SipTopUp" element={<SIPTopUpCalculator />} />
           <Route path="/FIRE" element={<FIRE />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Market" element={<Market />} />

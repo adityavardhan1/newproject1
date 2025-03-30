@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Sip.css';
 import ReverseSipCalculator from './components/ReverseSip';
 
-function SIPCalculator() {
+function SIPTopUpCalculator() {
   const [frequency, setFrequency] = useState('');
   const [investment, setInvestment] = useState('');
   const [rate, setRate] = useState('');
@@ -186,4 +186,4 @@ function SIPCalculator() {
   );
 }
 
-export default SIPCalculator;
+export default SIPTopUpCalculator;

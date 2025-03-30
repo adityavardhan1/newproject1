@@ -1,4 +1,6 @@
+/* Base Container Styles */
 .main-container {
+  margin-top: 80px;
   text-align: center;
   background-color: #f5f7fa;
   min-height: 100vh;
@@ -12,6 +14,7 @@
   padding: 20px;
 }
 
+/* Calculator Layout */
 .sip-calculator {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -19,6 +22,7 @@
   align-items: start;
 }
 
+/* Left Content Styles */
 .content-left {
   background: white;
   padding: 25px;
@@ -27,12 +31,29 @@
   transition: transform 0.3s ease;
 }
 
-h1.center {
-  color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 2.5em;
+.calculator-box {
+  text-align: center;
+  padding: 25px;
 }
 
+.calculator-box h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  text-align: center;
+}
+
+.calculator-intro {
+  text-align: center;
+  color: #666;
+  margin: 15px auto 25px;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 600px;
+  display: block;
+}
+
+/* Input Styles */
 .input-group {
   margin-bottom: 20px;
   text-align: left;
@@ -64,6 +85,7 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
+/* Button Styles */
 .button-container {
   display: flex;
   justify-content: center;
@@ -102,6 +124,7 @@ select:focus {
   transform: translateY(-2px);
 }
 
+/* Result Container Styles */
 .result-container {
   margin-top: 25px;
   padding: 20px;
@@ -117,76 +140,9 @@ select:focus {
   font-size: 1.1em;
 }
 
-.inflation-section {
-  margin-top: 20px;
-  border-top: 1px solid #e5e7eb;
-  padding-top: 20px;
-}
-
-.inflation-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.inflation-button:hover {
-  background-color: #45a049;
-  transform: translateY(-2px);
-}
-
-.inflation-results {
-  margin-top: 15px;
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.sidebar-right {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.sidebar-content h3 {
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-size: 1.3em;
-}
-
-.sidebar-content p {
-  color: #5d6d7e;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.reverse-sip-button {
-  background-color: #28a745;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 15px 0;
-  width: 100%;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.reverse-sip-button:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
-}
-
 /* Modal Styles */
+.cagr-modal,
+.time-modal,
 .reverse-sip-modal {
   position: fixed;
   top: 0;
@@ -200,6 +156,8 @@ select:focus {
   z-index: 1000;
 }
 
+.cagr-content,
+.time-content,
 .reverse-sip-content {
   background: white;
   padding: 30px;
@@ -210,6 +168,7 @@ select:focus {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .close-button {
@@ -226,6 +185,76 @@ select:focus {
 
 .close-button:hover {
   color: #333;
+}
+
+/* Sidebar Styles */
+.sidebar-right {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.sidebar-heading {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.calculator-button,
+.reverse-sip-button,
+.cagr-button,
+.time-button {
+  display: block;
+  width: 100%;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.calculator-button:hover,
+.reverse-sip-button:hover,
+.cagr-button:hover,
+.time-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.calculator-button:last-child,
+.reverse-sip-button:last-child,
+.cagr-button:last-child,
+.time-button:last-child {
+  margin-bottom: 0;
+}
+
+/* Inflation Button Styles */
+.inflation-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.inflation-button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
 }
 
 /* Responsive Styles */
@@ -254,7 +283,7 @@ select:focus {
 
   .calculate-button,
   .reset-button,
-  .reverse-sip-button,
+  .calculator-button,
   .inflation-button {
     width: 100%;
   }
@@ -263,14 +292,8 @@ select:focus {
     font-size: 2em;
   }
 
-  .reverse-sip-content {
-    width: 95%;
-    padding: 20px;
-  }
-  
-  .close-button {
-    right: 15px;
-    top: 15px;
+  .calculator-intro {
+    margin: 10px auto 20px;
   }
 }
 
@@ -287,5 +310,9 @@ select:focus {
   select {
     font-size: 14px;
     padding: 10px;
+  }
+
+  .calculator-box {
+    padding: 15px;
   }
 }

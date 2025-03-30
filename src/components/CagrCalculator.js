@@ -3,63 +3,69 @@ import '../Sip.css';
 
 function CagrCalculator({ onClose }) {
   const initialState = {
-    initialAmount: '',
+    monthlyInvestment: '',
     targetAmount: '',
     tenure: '',
-    requiredCAGR: 0,
+    requiredCagr: null,
     showResult: false,
-    isFirstCalculation: true
+    errorMessage: '',
   };
 
-  const [initialAmount, setInitialAmount] = useState(initialState.initialAmount);
-  const [targetAmount, setTargetAmount] = useState(initialState.targetAmount);
-  const [tenure, setTenure] = useState(initialState.tenure);
-  const [requiredCAGR, setRequiredCAGR] = useState(initialState.requiredCAGR);
-  const [showResult, setShowResult] = useState(initialState.showResult);
-  const [isFirstCalculation, setIsFirstCalculation] = useState(initialState.isFirstCalculation);
+  const [state, setState] = useState(initialState);
 
-  const calculateRequiredCAGR = (iAmount = initialAmount, tAmount = targetAmount, ten = tenure, isButtonClick = false) => {
-    const parsedInitial = parseInt(iAmount.replace(/,/g, "")) || 0;
-    const parsedTarget = parseInt(tAmount.replace(/,/g, "")) || 0;
-    const parsedTenure = parseInt(ten) || 1; // Default to 1 year if empty
+  const calculateRequiredCagr = () => {
+    const monthlyInvestment = parseFloat(state.monthlyInvestment.replace(/,/g, '')) || 0;
+    const targetAmount = parseFloat(state.targetAmount.replace(/,/g, '')) || 0;
+    const tenure = parseFloat(state.tenure) || 0;
 
-    if (parsedInitial > 0 && parsedTarget > 0) {
-      const cagr = (Math.pow(parsedTarget / parsedInitial, 1 / parsedTenure) - 1) * 100;
-      setRequiredCAGR(cagr);
-      
-      if (isButtonClick && isFirstCalculation) {
-        setShowResult(true);
-        setIsFirstCalculation(false);
-      }
+    if (monthlyInvestment <= 0 || targetAmount <= 0 || tenure <= 0) {
+      setState((prev) => ({ ...prev, errorMessage: 'Please enter valid values for all fields.' }));
+      return;
     }
-  };
 
-  const handleInputChange = (value, setter, type) => {
-    if (/^\d*$/.test(value)) {
-      setter(value);
+    let left = -500;
+    let right = 500;
+    const maxIterations = 100;
+    let iterations = 0;
 
-      if (!isFirstCalculation) {
-        calculateRequiredCAGR(
-          type === 'initialAmount' ? value : initialAmount,
-          type === 'targetAmount' ? value : targetAmount,
-          type === 'tenure' ? (value || '1') : tenure,
-          false
-        );
+    const n = tenure * 12;
+
+    while (iterations < maxIterations) {
+      const mid = (left + right) / 2;
+      const r = mid / 100 / 12;
+
+      // Handle the case when r is 0 to avoid division by zero
+      let futureValue = 0;
+      if (r === 0) {
+        futureValue = monthlyInvestment * n;
+      } else {
+        futureValue = monthlyInvestment * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
       }
+
+      if (Math.abs(futureValue - targetAmount) < 0.01) {
+        setState((prev) => ({ ...prev, requiredCagr: mid, showResult: true, errorMessage: '' }));
+        return;
+      }
+
+      if (futureValue < targetAmount) {
+        left = mid;
+      } else {
+        right = mid;
+      }
+      iterations++;
     }
+
+    setState((prev) => ({ ...prev, errorMessage: 'Calculation failed. Try adjusting the values.' }));
   };
 
-  const handleCalculateClick = () => {
-    calculateRequiredCAGR(initialAmount, targetAmount, tenure, true);
+  const handleInputChange = (value, field) => {
+    if (/^\d*\.?\d*$/.test(value)) {
+      setState((prev) => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleReset = () => {
-    setInitialAmount(initialState.initialAmount);
-    setTargetAmount(initialState.targetAmount);
-    setTenure(initialState.tenure);
-    setRequiredCAGR(initialState.requiredCAGR);
-    setShowResult(initialState.showResult);
-    setIsFirstCalculation(initialState.isFirstCalculation);
+    setState(initialState);
   };
 
   return (
@@ -67,16 +73,16 @@ function CagrCalculator({ onClose }) {
       <div className="cagr-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>Required CAGR Calculator</h2>
-        <p>Calculate the required growth rate to reach your target amount</p>
+        <p>Calculate the required growth rate to reach your target amount with SIP</p>
 
         <div className="input-group">
-          <label htmlFor="initialAmount">Initial Amount *</label>
+          <label htmlFor="monthlyInvestment">Monthly SIP Amount *</label>
           <input
             type="text"
-            id="initialAmount"
-            placeholder="Ex: 100000"
-            value={initialAmount}
-            onChange={(e) => handleInputChange(e.target.value, setInitialAmount, 'initialAmount')}
+            id="monthlyInvestment"
+            placeholder="Ex: 10000"
+            value={state.monthlyInvestment}
+            onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
             autoComplete="off"
           />
         </div>
@@ -87,8 +93,8 @@ function CagrCalculator({ onClose }) {
             type="text"
             id="targetAmount"
             placeholder="Ex: 1000000"
-            value={targetAmount}
-            onChange={(e) => handleInputChange(e.target.value, setTargetAmount, 'targetAmount')}
+            value={state.targetAmount}
+            onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
             autoComplete="off"
           />
         </div>
@@ -99,8 +105,8 @@ function CagrCalculator({ onClose }) {
             type="text"
             id="tenure"
             placeholder="Ex: 10"
-            value={tenure}
-            onChange={(e) => handleInputChange(e.target.value, setTenure, 'tenure')}
+            value={state.tenure}
+            onChange={(e) => handleInputChange(e.target.value, 'tenure')}
             autoComplete="off"
           />
         </div>
@@ -108,8 +114,8 @@ function CagrCalculator({ onClose }) {
         <div className="button-container">
           <button 
             className="calculate-button" 
-            onClick={handleCalculateClick}
-            disabled={!initialAmount || !targetAmount || !tenure}
+            onClick={calculateRequiredCagr}
+            disabled={!state.monthlyInvestment || !state.targetAmount || !state.tenure}
           >
             Calculate Required CAGR
           </button>
@@ -118,13 +124,15 @@ function CagrCalculator({ onClose }) {
           </button>
         </div>
 
-        {showResult && (
+        {state.errorMessage && <p className="error-message">{state.errorMessage}</p>}
+
+        {state.showResult && state.requiredCagr !== null && (
           <div className="result-container">
-            <p>Required CAGR: {requiredCAGR.toFixed(2)}% p.a.</p>
-            <p>Initial Amount: ₹{parseInt(initialAmount || 0).toLocaleString('en-IN')}</p>
-            <p>Target Amount: ₹{parseInt(targetAmount || 0).toLocaleString('en-IN')}</p>
-            <p>Time Period: {tenure || 1} years</p>
-            <p className="note">This is the required annual growth rate to grow your initial amount to the target amount.</p>
+            <p>Required CAGR: {state.requiredCagr.toFixed(2)}% p.a.</p>
+            <p>Monthly SIP: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
+            <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
+            <p>Time Period: {state.tenure} years</p>
+            <p className="note">This is the required annual growth rate to reach your target amount with regular monthly SIP.</p>
           </div>
         )}
       </div>

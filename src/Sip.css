@@ -34,7 +34,6 @@
 .calculator-box p {
   color: #666;
   margin-bottom: 25px;
-  text-align: left;  /* Added to ensure paragraph alignment */
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -322,4 +321,14 @@ select:focus {
     font-size: 14px;
     padding: 10px;
   }
+}
+
+.calculator-intro {
+  text-align: center !important;
+  color: #666;
+  margin: 15px 0 25px;
+  font-size: 1rem;
+  line-height: 1.5;
+  width: 100%;
+  display: block;
 }

@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import './Sip.css';
 import ReverseLumpsumCalculator from './components/ReverseLumpsum';
-import CagrCalculator from './components/CagrCalculator';
-import TimeCalculator from './components/TimeCalculator';
+import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
+import TimeCalculator from './components/LumpsumTimeCalculator';
 
 function LumpsumCalculator() {
   const [state, setState] = useState({
@@ -89,7 +89,7 @@ function LumpsumCalculator() {
           <div className="content-left">
             <div className="calculator-box">
               <h2>Lumpsum Investment Calculator</h2>
-              <p>Calculate your future wealth with a one-time investment.</p>
+              <p className="calculator-intro">Calculate your future wealth with a one-time investment.</p>
 
               {['investment', 'rate', 'tenure'].map((field) => (
                 <div className="input-group" key={field}>
@@ -186,8 +186,8 @@ function LumpsumCalculator() {
     onClose={() => setState(prev => ({ ...prev, showReverseLumpsum: false }))} 
   />
 )}
-        {state.showCagrCalculator && (
-          <CagrCalculator 
+         {state.showCagrCalculator && (
+          <LumpsumCagrCalculator 
             onClose={() => setState(prev => ({ ...prev, showCagrCalculator: false }))} 
           />
         )}

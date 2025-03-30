@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Sip.css';
 import ReverseSipCalculator from './components/ReverseSip';
+import CagrCalculator from './components/CagrCalculator';
+import TimeCalculator from './components/TimeCalculator';
 
 function SIPCalculator() {
   const [state, setState] = useState({
@@ -69,7 +71,9 @@ function SIPCalculator() {
   };
 
   const handleInputChange = (value, field) => {
-    setState(prev => ({ ...prev, [field]: value }));
+    if (/^\d*\.?\d*$/.test(value)) {
+      setState(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   return (
@@ -166,8 +170,6 @@ function SIPCalculator() {
               )}
             </div>
           </div>
-
-          {showReverseSip && <ReverseSipCalculator onClose={() => setShowReverseSip(false)} />}
 
           <div className="sidebar-right">
             <h3 className="sidebar-heading">Already know your goal amount?</h3>

@@ -24,9 +24,9 @@ function App() {
           <Route path="/" element={<Home />} />
           < Route path="/Home/Homelook" element={<Homelook />} />
           <Route path="/Calculator" element={<Calulator />} />
-          <Route path="/Calculator/Sip" element={<SipCalculator />} />
-          <Route path="/Calculator/Lumpsum" element={<LumpsumCalculator />} />
-          <Route path="/Calculator/SipTopUp" element={<SIPTopUpCalculator />} />
+          <Route path="/Calculator/SipCalculator" element={<SipCalculator />} />
+          <Route path="/Calculator/LumpsumCalculator" element={<LumpsumCalculator />} />
+          <Route path="/Calculator/SipTopUpCalculator" element={<SIPTopUpCalculator />} />
           <Route path="/FIRE" element={<FIRE />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Market" element={<Market />} />

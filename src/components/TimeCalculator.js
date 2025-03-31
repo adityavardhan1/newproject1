@@ -3,7 +3,7 @@ import '../Sip.css';
 
 function TimeCalculator({ onClose }) {
   const initialState = {
-    initialAmount: '',
+    monthlyInvestment: '',
     targetAmount: '',
     rate: '',
     requiredTime: 0,
@@ -11,55 +11,54 @@ function TimeCalculator({ onClose }) {
     isFirstCalculation: true
   };
 
-  const [initialAmount, setInitialAmount] = useState(initialState.initialAmount);
-  const [targetAmount, setTargetAmount] = useState(initialState.targetAmount);
-  const [rate, setRate] = useState(initialState.rate);
-  const [requiredTime, setRequiredTime] = useState(initialState.requiredTime);
-  const [showResult, setShowResult] = useState(initialState.showResult);
-  const [isFirstCalculation, setIsFirstCalculation] = useState(initialState.isFirstCalculation);
+  const [state, setState] = useState(initialState);
 
-  const calculateRequiredTime = (iAmount = initialAmount, tAmount = targetAmount, r = rate, isButtonClick = false) => {
-    const parsedInitial = parseInt(iAmount.replace(/,/g, "")) || 0;
-    const parsedTarget = parseInt(tAmount.replace(/,/g, "")) || 0;
-    const parsedRate = parseFloat(r) || 0;
+  const calculateRequiredTime = () => {
+    const monthlyInvestment = parseFloat(state.monthlyInvestment.replace(/,/g, '')) || 0;
+    const targetAmount = parseFloat(state.targetAmount.replace(/,/g, '')) || 0;
+    const rate = parseFloat(state.rate) || 0;
 
-    if (parsedInitial > 0 && parsedTarget > 0 && parsedRate > 0) {
-      const time = (Math.log(parsedTarget / parsedInitial)) / (Math.log(1 + (parsedRate/100)));
-      setRequiredTime(time);
-      
-      if (isButtonClick && isFirstCalculation) {
-        setShowResult(true);
-        setIsFirstCalculation(false);
-      }
+    if (monthlyInvestment <= 0 || targetAmount <= 0 || rate <= 0) {
+      return;
     }
+
+    const r = rate / 100 / 12;
+    const P = monthlyInvestment;
+    const A = targetAmount;
+
+    // Using logarithm to solve for n in the SIP formula
+    const n = Math.log(1 + (A * r) / (P * (1 + r))) / Math.log(1 + r);
+    
+    setState(prev => ({
+      ...prev,
+      requiredTime: n / 12,
+      showResult: true
+    }));
   };
 
-  const handleInputChange = (value, setter, type) => {
+  const handleInputChange = (value, field) => {
     if (/^\d*\.?\d*$/.test(value)) {
-      setter(value);
-
-      if (!isFirstCalculation) {
-        calculateRequiredTime(
-          type === 'initialAmount' ? value : initialAmount,
-          type === 'targetAmount' ? value : targetAmount,
-          type === 'rate' ? value : rate,
-          false
-        );
-      }
+      setState(prev => ({ ...prev, [field]: value }));
     }
-  };
-
-  const handleCalculateClick = () => {
-    calculateRequiredTime(initialAmount, targetAmount, rate, true);
   };
 
   const handleReset = () => {
-    setInitialAmount(initialState.initialAmount);
-    setTargetAmount(initialState.targetAmount);
-    setRate(initialState.rate);
-    setRequiredTime(initialState.requiredTime);
-    setShowResult(initialState.showResult);
-    setIsFirstCalculation(initialState.isFirstCalculation);
+    setState(initialState);
+  };
+
+  const formatTime = (years) => {
+    const wholeYears = Math.floor(years);
+    const months = Math.round((years - wholeYears) * 12);
+    
+    if (months === 12) {
+      return `${wholeYears + 1} years`;
+    }
+    
+    if (wholeYears === 0) {
+      return `${months} months`;
+    }
+    
+    return months > 0 ? `${wholeYears} years ${months} months` : `${wholeYears} years`;
   };
 
   return (
@@ -67,16 +66,16 @@ function TimeCalculator({ onClose }) {
       <div className="time-content">
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>Required Time Calculator</h2>
-        <p>Calculate the time needed to reach your target amount</p>
+        <p>Calculate time needed to reach your target amount with SIP</p>
 
         <div className="input-group">
-          <label htmlFor="initialAmount">Initial Amount *</label>
+          <label htmlFor="monthlyInvestment">Monthly SIP Amount *</label>
           <input
             type="text"
-            id="initialAmount"
-            placeholder="Ex: 100000"
-            value={initialAmount}
-            onChange={(e) => handleInputChange(e.target.value, setInitialAmount, 'initialAmount')}
+            id="monthlyInvestment"
+            placeholder="Ex: 10000"
+            value={state.monthlyInvestment}
+            onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
             autoComplete="off"
           />
         </div>
@@ -87,8 +86,8 @@ function TimeCalculator({ onClose }) {
             type="text"
             id="targetAmount"
             placeholder="Ex: 1000000"
-            value={targetAmount}
-            onChange={(e) => handleInputChange(e.target.value, setTargetAmount, 'targetAmount')}
+            value={state.targetAmount}
+            onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
             autoComplete="off"
           />
         </div>
@@ -99,17 +98,17 @@ function TimeCalculator({ onClose }) {
             type="text"
             id="rate"
             placeholder="Ex: 12"
-            value={rate}
-            onChange={(e) => handleInputChange(e.target.value, setRate, 'rate')}
+            value={state.rate}
+            onChange={(e) => handleInputChange(e.target.value, 'rate')}
             autoComplete="off"
           />
         </div>
 
         <div className="button-container">
           <button 
-            className="calculate-button" 
-            onClick={handleCalculateClick}
-            disabled={!initialAmount || !targetAmount || !rate}
+            className="calculate-button"
+            onClick={calculateRequiredTime}
+            disabled={!state.monthlyInvestment || !state.targetAmount || !state.rate}
           >
             Calculate Required Time
           </button>
@@ -118,13 +117,13 @@ function TimeCalculator({ onClose }) {
           </button>
         </div>
 
-        {showResult && (
+        {state.showResult && (
           <div className="result-container">
-            <p>Required Time: {requiredTime.toFixed(1)} years</p>
-            <p>Initial Amount: ₹{parseInt(initialAmount || 0).toLocaleString('en-IN')}</p>
-            <p>Target Amount: ₹{parseInt(targetAmount || 0).toLocaleString('en-IN')}</p>
-            <p>Expected Return: {rate}% p.a.</p>
-            <p className="note">This is the time needed for your initial amount to grow to the target amount at the expected rate of return.</p>
+            <p>Required Time: {formatTime(state.requiredTime)}</p>
+            <p>Monthly SIP: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
+            <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
+            <p>Expected Return Rate: {state.rate}% p.a.</p>
+            <p className="note">This is the time required to reach your target amount with regular monthly SIP.</p>
           </div>
         )}
       </div>

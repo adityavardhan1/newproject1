@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Sip.css';
-import ReverseSipCalculator from './components/ReverseSip';
+import StepUpCalculator from './components/StepUpCalculator';
 import CagrCalculator from './components/CagrCalculator';
 import TimeCalculator from './components/TimeCalculator';
 
@@ -198,7 +198,7 @@ const SIPTopUpCalculator = () => {
                 showReverseSip: !prev.showReverseSip 
               }))}
             >
-              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Know Your Required Investment'}
+              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Calculate Your Required Step Up Percentage'}
             </button>
             <button 
               className="cagr-button" 
@@ -207,7 +207,7 @@ const SIPTopUpCalculator = () => {
                 showCagrCalculator: !prev.showCagrCalculator 
               }))}
             >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Know Your Required CAGR'}
+              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Calculate Your Required CAGR'}
             </button>
             <button 
               className="time-button" 
@@ -216,13 +216,13 @@ const SIPTopUpCalculator = () => {
                 showTimeCalculator: !prev.showTimeCalculator 
               }))}
             >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Know Your Required Time'}
+              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Calculate Your Required Time'}
             </button>
           </div>
         </div>
 
         {state.showReverseSip && (
-          <ReverseSipCalculator 
+          <StepUpCalculator
             onClose={() => setState(prev => ({ ...prev, showReverseSip: false }))} 
           />
         )}

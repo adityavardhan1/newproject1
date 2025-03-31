@@ -196,7 +196,7 @@ function SIPCalculator() {
                 showReverseSip: !prev.showReverseSip 
               }))}
             >
-              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Know Your Required Investment'}
+              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Calculate Your Required Monthly SIP'}
             </button>
             <button 
               className="cagr-button" 
@@ -205,7 +205,7 @@ function SIPCalculator() {
                 showCagrCalculator: !prev.showCagrCalculator 
               }))}
             >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Know Your Required CAGR'}
+              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Calculate Your Required CAGR'}
             </button>
             <button 
               className="time-button" 
@@ -214,7 +214,7 @@ function SIPCalculator() {
                 showTimeCalculator: !prev.showTimeCalculator 
               }))}
             >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Know Your Required Time'}
+              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Calculate Your Required Time'}
             </button>
           </div>
         </div>

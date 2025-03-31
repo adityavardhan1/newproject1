@@ -196,7 +196,7 @@ function SIPCalculator() {
                 showReverseSip: !prev.showReverseSip 
               }))}
             >
-              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Calculate Your Required Monthly SIP'}
+              {state.showReverseSip ? 'Hide Required Monthly SIP Calculator' : 'Calculate Your Required Monthly SIP'}
             </button>
             <button 
               className="cagr-button" 

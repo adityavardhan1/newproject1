@@ -158,7 +158,7 @@ function LumpsumCalculator() {
                 showReverseLumpsum: !prev.showReverseLumpsum 
               }))}
             >
-              {state.showReverseLumpsum ? 'Hide Required Investment Calculator' : 'Calculate Your Required One Time Investment'}
+              {state.showReverseLumpsum ? 'Hide Required One Time Investment Calculator' : 'Calculate Your Required One Time Investment'}
             </button>
             <button 
               className="cagr-button" 

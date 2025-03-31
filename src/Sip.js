@@ -89,6 +89,8 @@ function SIPCalculator() {
                 onChange={(e) => setFrequency(e.target.value)}
               >
                 <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="half-yearly">Half-Yearly</option>
               </select>
             </div>
 

@@ -158,7 +158,7 @@ function LumpsumCalculator() {
                 showReverseLumpsum: !prev.showReverseLumpsum 
               }))}
             >
-              {state.showReverseLumpsum ? 'Hide Required Investment Calculator' : 'Know Your Required Investment'}
+              {state.showReverseLumpsum ? 'Hide Required One Time Investment Calculator' : 'Calculate Your Required One Time Investment'}
             </button>
             <button 
               className="cagr-button" 
@@ -167,7 +167,7 @@ function LumpsumCalculator() {
                 showCagrCalculator: !prev.showCagrCalculator 
               }))}
             >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Know Your Required CAGR'}
+              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Calculate Your Required CAGR'}
             </button>
             <button 
               className="time-button" 
@@ -176,7 +176,7 @@ function LumpsumCalculator() {
                 showTimeCalculator: !prev.showTimeCalculator 
               }))}
             >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Know Your Required Time'}
+              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Calculate Your Required Time'}
             </button>
           </div>
         </div>

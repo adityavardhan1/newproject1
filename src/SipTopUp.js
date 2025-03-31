@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Sip.css';
-import ReverseSipCalculator from './components/ReverseSip';
-import CagrCalculator from './components/CagrCalculator';
-import TimeCalculator from './components/TimeCalculator';
+import StepUpCalculator from './components/StepUpCalculator';
+import StepupCagrCalculator from './components/StepupCagrCalculator';
+import StepupTimeCalculator from './components/StepupTimeCalculator';
 
 const SIPTopUpCalculator = () => {
   const [state, setState] = useState({
@@ -54,9 +54,13 @@ const SIPTopUpCalculator = () => {
   };
 
   const formatAmount = (num) => {
-    return num >= 10000000 
-      ? `₹${(num / 10000000).toFixed(2)} Cr` 
-      : `₹${(num / 100000).toFixed(2)} Lakh`;
+    const amount = parseFloat(num);
+    if (isNaN(amount)) return '₹0';
+    return amount >= 10000000 
+      ? `₹${(amount / 10000000).toFixed(2)} Cr` 
+      : amount >= 100000 
+      ? `₹${(amount / 100000).toFixed(2)} Lakh`
+      : `₹${amount.toLocaleString('en-IN')}`;
   };
 
   const calculateInflationAdjusted = (amount) => {
@@ -101,7 +105,7 @@ const SIPTopUpCalculator = () => {
           <div className="content-left">
             <div className="calculator-box">
               <h2>SIP with Top-up Calculator</h2>
-              <p className="calculator-intro">Calculate your future wealth with yearly SIP top-ups.</p>
+              <p className="calculator-intro">Calculate your future wealth with yearly SIP top-ups</p>
 
               <div className="input-group">
                 <label htmlFor="investment">Monthly Investment Amount *</label>
@@ -116,7 +120,7 @@ const SIPTopUpCalculator = () => {
               </div>
 
               <div className="input-group">
-                <label htmlFor="topUpPercentage">Yearly Top Up (%)*</label>
+                <label htmlFor="topUpPercentage">Yearly Top Up (%) *</label>
                 <input
                   type="text"
                   id="topUpPercentage"
@@ -159,31 +163,36 @@ const SIPTopUpCalculator = () => {
                 >
                   Calculate
                 </button>
-                <button className="reset-button" onClick={handleReset}>
+                <button 
+                  className="reset-button" 
+                  onClick={handleReset}
+                >
                   Reset
                 </button>
               </div>
 
               {state.showResult && (
                 <div className="result-container">
-                  <p>Future Value: {formatAmount(state.futureValue)}</p>
-                  <p>Total Earnings: {formatAmount(state.totalEarnings)}</p>
-                  <p>Total Amount Invested: {formatAmount(state.totalDeposited)}</p>
-                  <button 
-                    className="inflation-button" 
-                    onClick={() => setState(prev => ({ 
-                      ...prev, 
-                      showInflationAdjusted: !prev.showInflationAdjusted 
-                    }))}
-                  >
-                    {state.showInflationAdjusted ? 'Hide' : 'Show'} Inflation Adjusted Value
-                  </button>
-                  {state.showInflationAdjusted && (
-                    <p>
-                      Inflation Adjusted Future Value (7% p.a.): 
-                      {calculateInflationAdjusted(state.futureValue)}
-                    </p>
-                  )}
+                  <div className="result-details">
+                    <p>Future Value: {formatAmount(state.futureValue)}</p>
+                    <p>Total Amount Invested: {formatAmount(state.totalDeposited)}</p>
+                    <p>Total Earnings: {formatAmount(state.totalEarnings)}</p>
+                    <button 
+                      className="inflation-button" 
+                      onClick={() => setState(prev => ({ 
+                        ...prev, 
+                        showInflationAdjusted: !prev.showInflationAdjusted 
+                      }))}
+                    >
+                      {state.showInflationAdjusted ? 'Hide' : 'Show'} Inflation Adjusted Value
+                    </button>
+                    {state.showInflationAdjusted && (
+                      <p>
+                        Inflation Adjusted Value (7% p.a.): 
+                        {calculateInflationAdjusted(state.futureValue)}
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -198,7 +207,7 @@ const SIPTopUpCalculator = () => {
                 showReverseSip: !prev.showReverseSip 
               }))}
             >
-              {state.showReverseSip ? 'Hide Required Investment Calculator' : 'Know Your Required Investment'}
+              {state.showReverseSip ? 'Hide Required Step-up Percentage Calculator' : 'Calculate Your Required Step-up Percentage'}
             </button>
             <button 
               className="cagr-button" 
@@ -207,7 +216,7 @@ const SIPTopUpCalculator = () => {
                 showCagrCalculator: !prev.showCagrCalculator 
               }))}
             >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Know Your Required CAGR'}
+              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Calculate Your Required CAGR'}
             </button>
             <button 
               className="time-button" 
@@ -216,23 +225,23 @@ const SIPTopUpCalculator = () => {
                 showTimeCalculator: !prev.showTimeCalculator 
               }))}
             >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Know Your Required Time'}
+              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Calculate Your Required Time'}
             </button>
           </div>
         </div>
 
         {state.showReverseSip && (
-          <ReverseSipCalculator 
+          <StepUpCalculator
             onClose={() => setState(prev => ({ ...prev, showReverseSip: false }))} 
           />
         )}
         {state.showCagrCalculator && (
-          <CagrCalculator 
+          <StepupCagrCalculator
             onClose={() => setState(prev => ({ ...prev, showCagrCalculator: false }))} 
           />
         )}
         {state.showTimeCalculator && (
-          <TimeCalculator 
+          <StepupTimeCalculator
             onClose={() => setState(prev => ({ ...prev, showTimeCalculator: false }))} 
           />
         )}

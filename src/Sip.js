@@ -17,28 +17,32 @@ function SIPCalculator() {
     showInflationAdjusted: false,
     showReverseSip: false,
     showCagrCalculator: false,
-    showTimeCalculator: false
+    showTimeCalculator: false,
+    isFirstCalculation: true
   });
 
-  const calculateSip = () => {
-    const parsedInvestment = parseFloat(state.investment.replace(/,/g, "")) || 0;
-    const parsedRate = parseFloat(state.rate) || 0;
-    const parsedTenure = parseFloat(state.tenure) || 0;
+  const calculateSip = (inv = state.investment, rt = state.rate, ten = state.tenure, isButtonClick = false) => {
+    const parsedInvestment = parseFloat(inv.replace(/,/g, "")) || 0;
+    const parsedRate = parseFloat(rt) || 0;
+    const parsedTenure = parseFloat(ten) || 0;
 
-    const schedule = 12; // Monthly
-    const r = parsedRate / 100 / schedule;
-    const n = parsedTenure * schedule;
-    const a = parsedInvestment * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-    const totalDepositedCalc = parsedInvestment * n;
-    const totalEarningsCalc = a - totalDepositedCalc;
+    if (parsedInvestment > 0 && parsedRate > 0 && parsedTenure > 0) {
+      const schedule = 12; // Monthly
+      const r = parsedRate / 100 / schedule;
+      const n = parsedTenure * schedule;
+      const a = parsedInvestment * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+      const totalDepositedCalc = parsedInvestment * n;
+      const totalEarningsCalc = a - totalDepositedCalc;
 
-    setState(prev => ({
-      ...prev,
-      futureValue: a,
-      totalEarnings: totalEarningsCalc,
-      totalDeposited: totalDepositedCalc,
-      showResult: true
-    }));
+      setState(prev => ({
+        ...prev,
+        futureValue: a,
+        totalEarnings: totalEarningsCalc,
+        totalDeposited: totalDepositedCalc,
+        showResult: true,
+        isFirstCalculation: isButtonClick ? false : prev.isFirstCalculation
+      }));
+    }
   };
 
   const formatAmount = (num) => {
@@ -66,13 +70,23 @@ function SIPCalculator() {
       showInflationAdjusted: false,
       showReverseSip: false,
       showCagrCalculator: false,
-      showTimeCalculator: false
+      showTimeCalculator: false,
+      isFirstCalculation: true
     });
   };
 
   const handleInputChange = (value, field) => {
     if (/^\d*\.?\d*$/.test(value)) {
       setState(prev => ({ ...prev, [field]: value }));
+      
+      if (!state.isFirstCalculation) {
+        calculateSip(
+          field === 'investment' ? value : state.investment,
+          field === 'rate' ? value : state.rate,
+          field === 'tenure' ? value : state.tenure,
+          false
+        );
+      }
     }
   };
 
@@ -136,7 +150,7 @@ function SIPCalculator() {
               <div className="button-container">
                 <button 
                   className="calculate-button" 
-                  onClick={calculateSip}
+                  onClick={() => calculateSip(state.investment, state.rate, state.tenure, true)}
                   disabled={!state.investment || !state.rate || !state.tenure}
                 >
                   Calculate

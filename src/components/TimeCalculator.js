@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Sip.css';
 
-function TimeCalculator({ onClose }) {
+function TimeCalculator() {
   const initialState = {
     monthlyInvestment: '',
     targetAmount: '',
@@ -62,70 +62,74 @@ function TimeCalculator({ onClose }) {
   };
 
   return (
-    <div className="time-modal">
-      <div className="time-content">
-        <button className="close-button" onClick={onClose}>&times;</button>
-        <h2>Required Time Calculator</h2>
-        <p>Calculate time needed to reach your target amount with SIP</p>
-
-        <div className="input-group">
-          <label htmlFor="monthlyInvestment">Monthly SIP Amount *</label>
-          <input
-            type="text"
-            id="monthlyInvestment"
-            placeholder="Ex: 10000"
-            value={state.monthlyInvestment}
-            onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
-            autoComplete="off"
-          />
+    <div className="calculator-page">
+      <div className="calculator-container">
+        <div className="calculator-header">
+          <h1>Time Duration Calculator - One Time Investment</h1>
+          <p className="calculator-description">Calculate time needed to reach your target amount with one-time investment</p>
         </div>
 
-        <div className="input-group">
-          <label htmlFor="targetAmount">Target Amount *</label>
-          <input
-            type="text"
-            id="targetAmount"
-            placeholder="Ex: 1000000"
-            value={state.targetAmount}
-            onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
-            autoComplete="off"
-          />
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="rate">Expected Rate of Return (P.A) *</label>
-          <input
-            type="text"
-            id="rate"
-            placeholder="Ex: 12"
-            value={state.rate}
-            onChange={(e) => handleInputChange(e.target.value, 'rate')}
-            autoComplete="off"
-          />
-        </div>
-
-        <div className="button-container">
-          <button 
-            className="calculate-button"
-            onClick={calculateRequiredTime}
-            disabled={!state.monthlyInvestment || !state.targetAmount || !state.rate}
-          >
-            Calculate Required Time
-          </button>
-          <button className="reset-button" onClick={handleReset}>
-            Reset
-          </button>
-        </div>
-
-        {state.showResult && (
-          <div className="result-container">
-            <p>Required Time: {formatTime(state.requiredTime)}</p>
-            <p>Monthly SIP: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
-            <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
-            <p>Expected Return Rate: {state.rate}% p.a.</p>
-            <p className="note">This is the time required to reach your target amount with regular monthly SIP.</p>
+        <div className="calculator-content">
+          <div className="input-group">
+            <label htmlFor="monthlyInvestment">Investment Amount *</label>
+            <input
+              type="text"
+              id="monthlyInvestment"
+              placeholder="Ex: 100000"
+              value={state.monthlyInvestment}
+              onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
+              autoComplete="off"
+            />
           </div>
-        )}
+
+          <div className="input-group">
+            <label htmlFor="targetAmount">Target Amount *</label>
+            <input
+              type="text"
+              id="targetAmount"
+              placeholder="Ex: 1000000"
+              value={state.targetAmount}
+              onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
+              autoComplete="off"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="rate">Expected Rate of Return (P.A) *</label>
+            <input
+              type="text"
+              id="rate"
+              placeholder="Ex: 12"
+              value={state.rate}
+              onChange={(e) => handleInputChange(e.target.value, 'rate')}
+              autoComplete="off"
+            />
+          </div>
+
+          <div className="button-container">
+            <button 
+              className="calculate-button"
+              onClick={calculateRequiredTime}
+              disabled={!state.monthlyInvestment || !state.targetAmount || !state.rate}
+            >
+              Calculate Required Time
+            </button>
+            <button className="reset-button" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
+
+          {state.showResult && (
+            <div className="result-container">
+              <h2>Results</h2>
+              <p>Required Time: {formatTime(state.requiredTime)}</p>
+              <p>Investment Amount: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
+              <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
+              <p>Expected Return Rate: {state.rate}% p.a.</p>
+              <p className="note">This is the time required to reach your target amount with a one-time investment.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

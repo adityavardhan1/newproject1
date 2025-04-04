@@ -1,0 +1,32 @@
+.calculator-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #9EC6F3 0%, #E8F4FF 100%);
+}
+
+.calculator-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(158, 198, 243, 0.2);
+}
+
+@media (max-width: 768px) {
+  .calculator-page {
+    padding: 20px 10px;
+  }
+
+  .calculator-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator-container {
+    padding: 15px;
+  }
+} 

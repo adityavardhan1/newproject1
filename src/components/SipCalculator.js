@@ -79,12 +79,11 @@ function SipCalculator() {
 
   return (
     <div className="main-container">
-      <h1 className="center">SIP Calculator</h1>
       <div className="content-wrapper">
         <div className="sip-calculator">
           <div className="content-left">
             <div className="calculator-box">
-              <h2>SIP Investment Calculator</h2>
+              <h2>SIP Calculator</h2>
               <p className="calculator-intro">Calculate your future wealth with regular monthly investments.</p>
 
               {['monthlyInvestment', 'rate', 'tenure'].map((field) => (

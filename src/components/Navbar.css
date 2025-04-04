@@ -23,6 +23,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
+  text-decoration: none;
 }
 
 .navbar-right {
@@ -97,5 +98,10 @@
   
   .dropdown-content {
     min-width: 200px;
+  }
+  
+  /* Hide navbar on mobile screens */
+  .navbar {
+    display: none;
   }
 }

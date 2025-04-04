@@ -43,73 +43,75 @@ function LumpsumCagrCalculator() {
   };
 
   return (
-    <div className="calculator-page">
-      <div className="calculator-container">
-        <div className="calculator-header">
-          <h1>Lumpsum CAGR Calculator</h1>
-          <p className="calculator-description">Calculate the Compound Annual Growth Rate of your lumpsum investments</p>
-        </div>
+    <div className="main-container">
+      <div className="content-wrapper">
+        <div className="sip-calculator">
+          <div className="content-left">
+            <div className="calculator-box">
+              <h2>Lumpsum CAGR Calculator</h2>
+              <p className="calculator-intro">Calculate the Compound Annual Growth Rate of your lumpsum investments</p>
 
-        <div className="calculator-content">
-          <div className="input-group">
-            <label htmlFor="initialValue">Initial Investment Value *</label>
-            <input
-              type="text"
-              id="initialValue"
-              placeholder="Ex: 100000"
-              value={state.initialValue}
-              onChange={(e) => handleInputChange(e.target.value, 'initialValue')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="initialValue">Initial Investment Value *</label>
+                <input
+                  type="text"
+                  id="initialValue"
+                  placeholder="Ex: 100000"
+                  value={state.initialValue}
+                  onChange={(e) => handleInputChange(e.target.value, 'initialValue')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="finalValue">Final Investment Value *</label>
-            <input
-              type="text"
-              id="finalValue"
-              placeholder="Ex: 200000"
-              value={state.finalValue}
-              onChange={(e) => handleInputChange(e.target.value, 'finalValue')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="finalValue">Final Investment Value *</label>
+                <input
+                  type="text"
+                  id="finalValue"
+                  placeholder="Ex: 200000"
+                  value={state.finalValue}
+                  onChange={(e) => handleInputChange(e.target.value, 'finalValue')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="timePeriod">Time Period (in years) *</label>
-            <input
-              type="text"
-              id="timePeriod"
-              placeholder="Ex: 5"
-              value={state.timePeriod}
-              onChange={(e) => handleInputChange(e.target.value, 'timePeriod')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="timePeriod">Time Period (in years) *</label>
+                <input
+                  type="text"
+                  id="timePeriod"
+                  placeholder="Ex: 5"
+                  value={state.timePeriod}
+                  onChange={(e) => handleInputChange(e.target.value, 'timePeriod')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="button-container">
-            <button 
-              className="calculate-button"
-              onClick={calculateCAGR}
-              disabled={!state.initialValue || !state.finalValue || !state.timePeriod}
-            >
-              Calculate CAGR
-            </button>
-            <button className="reset-button" onClick={handleReset}>
-              Reset
-            </button>
-          </div>
+              <div className="button-container">
+                <button 
+                  className="calculate-button"
+                  onClick={calculateCAGR}
+                  disabled={!state.initialValue || !state.finalValue || !state.timePeriod}
+                >
+                  Calculate CAGR
+                </button>
+                <button className="reset-button" onClick={handleReset}>
+                  Reset
+                </button>
+              </div>
 
-          {state.showResult && (
-            <div className="result-container">
-              <h2>Results</h2>
-              <p>CAGR: {state.cagr.toFixed(2)}%</p>
-              <p>Initial Investment: ₹{parseFloat(state.initialValue).toLocaleString('en-IN')}</p>
-              <p>Final Value: ₹{parseFloat(state.finalValue).toLocaleString('en-IN')}</p>
-              <p>Time Period: {state.timePeriod} years</p>
-              <p className="note">This is the annual rate at which your lumpsum investment has grown over the specified time period.</p>
+              {state.showResult && (
+                <div className="result-container">
+                  <h2>Results</h2>
+                  <p>CAGR: {state.cagr.toFixed(2)}%</p>
+                  <p>Initial Investment: ₹{parseFloat(state.initialValue).toLocaleString('en-IN')}</p>
+                  <p>Final Value: ₹{parseFloat(state.finalValue).toLocaleString('en-IN')}</p>
+                  <p>Time Period: {state.timePeriod} years</p>
+                  <p className="note">This is the annual rate at which your lumpsum investment has grown over the specified time period.</p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

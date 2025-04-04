@@ -77,7 +77,6 @@ function OneTimeInvestmentCalculator() {
 
   return (
     <div className="main-container">
-      <h1 className="center">One-Time Investment Return Calculator</h1>
       <div className="content-wrapper">
         <div className="sip-calculator">
           <div className="content-left">

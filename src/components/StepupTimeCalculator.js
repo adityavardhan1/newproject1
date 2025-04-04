@@ -65,86 +65,88 @@ function StepupTimeCalculator() {
   };
 
   return (
-    <div className="calculator-page">
-      <div className="calculator-container">
-        <div className="calculator-header">
-          <h1>Time Duration Calculator - Regular Investment</h1>
-          <p className="calculator-description">Calculate time needed to reach your target amount with increasing monthly investments</p>
-        </div>
+    <div className="main-container">
+      <div className="content-wrapper">
+        <div className="sip-calculator">
+          <div className="content-left">
+            <div className="calculator-box">
+              <h2>Time Duration Calculator - Regular Investment</h2>
+              <p className="calculator-intro">Calculate time needed to reach your target amount with increasing monthly investments</p>
 
-        <div className="calculator-content">
-          <div className="input-group">
-            <label htmlFor="monthlyInvestment">Initial Monthly Investment *</label>
-            <input
-              type="text"
-              id="monthlyInvestment"
-              placeholder="Ex: 10000"
-              value={state.monthlyInvestment}
-              onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="monthlyInvestment">Initial Monthly Investment *</label>
+                <input
+                  type="text"
+                  id="monthlyInvestment"
+                  placeholder="Ex: 10000"
+                  value={state.monthlyInvestment}
+                  onChange={(e) => handleInputChange(e.target.value, 'monthlyInvestment')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="stepUpPercentage">Annual Step-up Percentage *</label>
-            <input
-              type="text"
-              id="stepUpPercentage"
-              placeholder="Ex: 10"
-              value={state.stepUpPercentage}
-              onChange={(e) => handleInputChange(e.target.value, 'stepUpPercentage')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="stepUpPercentage">Annual Step-up Percentage *</label>
+                <input
+                  type="text"
+                  id="stepUpPercentage"
+                  placeholder="Ex: 10"
+                  value={state.stepUpPercentage}
+                  onChange={(e) => handleInputChange(e.target.value, 'stepUpPercentage')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="targetAmount">Target Amount *</label>
-            <input
-              type="text"
-              id="targetAmount"
-              placeholder="Ex: 1000000"
-              value={state.targetAmount}
-              onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="targetAmount">Target Amount *</label>
+                <input
+                  type="text"
+                  id="targetAmount"
+                  placeholder="Ex: 1000000"
+                  value={state.targetAmount}
+                  onChange={(e) => handleInputChange(e.target.value, 'targetAmount')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-group">
-            <label htmlFor="rate">Expected Rate of Return (P.A) *</label>
-            <input
-              type="text"
-              id="rate"
-              placeholder="Ex: 12"
-              value={state.rate}
-              onChange={(e) => handleInputChange(e.target.value, 'rate')}
-              autoComplete="off"
-            />
-          </div>
+              <div className="input-group">
+                <label htmlFor="rate">Expected Rate of Return (P.A) *</label>
+                <input
+                  type="text"
+                  id="rate"
+                  placeholder="Ex: 12"
+                  value={state.rate}
+                  onChange={(e) => handleInputChange(e.target.value, 'rate')}
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="button-container">
-            <button 
-              className="calculate-button"
-              onClick={calculateRequiredTime}
-              disabled={!state.monthlyInvestment || !state.targetAmount || !state.rate || !state.stepUpPercentage}
-            >
-              Calculate Required Time
-            </button>
-            <button className="reset-button" onClick={handleReset}>
-              Reset
-            </button>
-          </div>
+              <div className="button-container">
+                <button 
+                  className="calculate-button"
+                  onClick={calculateRequiredTime}
+                  disabled={!state.monthlyInvestment || !state.targetAmount || !state.rate || !state.stepUpPercentage}
+                >
+                  Calculate Required Time
+                </button>
+                <button className="reset-button" onClick={handleReset}>
+                  Reset
+                </button>
+              </div>
 
-          {state.showResult && (
-            <div className="result-container">
-              <h2>Results</h2>
-              <p>Required Time: {formatTime(state.requiredTime)}</p>
-              <p>Initial Monthly Investment: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
-              <p>Annual Step-up: {state.stepUpPercentage}%</p>
-              <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
-              <p>Expected Return Rate: {state.rate}% p.a.</p>
-              <p className="note">This is the time required to reach your target amount with increasing monthly investments.</p>
+              {state.showResult && (
+                <div className="result-container">
+                  <h2>Results</h2>
+                  <p>Required Time: {formatTime(state.requiredTime)}</p>
+                  <p>Initial Monthly Investment: ₹{parseFloat(state.monthlyInvestment).toLocaleString('en-IN')}</p>
+                  <p>Annual Step-up: {state.stepUpPercentage}%</p>
+                  <p>Target Amount: ₹{parseFloat(state.targetAmount).toLocaleString('en-IN')}</p>
+                  <p>Expected Return Rate: {state.rate}% p.a.</p>
+                  <p className="note">This is the time required to reach your target amount with increasing monthly investments.</p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

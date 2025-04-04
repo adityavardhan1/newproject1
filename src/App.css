@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .App-logo {
@@ -36,3 +39,24 @@
     transform: rotate(360deg);
   }
 }
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.mobile-content {
+  padding-top: 80px; /* Extra padding to account for the fixed header */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 15px;
+  }
+}
+
+/* Add any other global styles below */

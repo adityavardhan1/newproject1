@@ -1,9 +1,8 @@
-import "./Navbar.css";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Navbar.css';
 
-export default function Navbar() {
-  const [showDropdown, setShowDropdown] = useState(false);
+const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -24,44 +23,32 @@ export default function Navbar() {
     { name: 'One-Time Investment Calculator', path: '/Calculator/OneTimeInvestmentCalculator' }
   ];
 
-  const handleCalculatorClick = () => {
-    setShowDropdown(false);
-  };
-
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-left">
-        <h1 className="Logo">NitiDhan</h1>
-      </div>
-      <div className="navbar-right">
-        <Link to="/">Home</Link>
-        <Link to="/ContactUs">Support Us</Link>
-        <Link to="/AskUs">Ask Us</Link>
-        <div 
-          className="calculator-dropdown"
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
-        >
-          <Link to="/Calculator">Calculator</Link>
-          {showDropdown && (
-            <div className="dropdown-content">
-              {calculators.map(calc => (
-                <Link 
-                  key={calc.path} 
-                  to={calc.path}
-                  onClick={handleCalculatorClick}
-                >
-                  {calc.name}
-                </Link>
-              ))}
-            </div>
-          )}
+      <div className="navbar-container">
+        <div className="navbar-logo">
+          <Link to="/">NitiDhan</Link>
         </div>
-        <Link to="/FIRE">F.I.R.E</Link>
-        <Link to="/Market">Market</Link>
-        <Link to="/Login">Login</Link>
-        <Link to="/Signup">Sign Up</Link>
+        <ul className="nav-menu">
+          <li className="nav-item">
+            <Link to="/" className="nav-link">Home</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/Calculator" className="nav-link">Calculators</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/Market" className="nav-link">Market</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/FIRE" className="nav-link">FIRE</Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/about" className="nav-link">About</Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;

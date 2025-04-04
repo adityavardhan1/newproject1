@@ -77,13 +77,12 @@ function LumpsumCalculator() {
 
   return (
     <div className="main-container">
-      <h1 className="center">Lumpsum Calculator</h1>
       <div className="content-wrapper">
         <div className="sip-calculator">
           <div className="content-left">
             <div className="calculator-box">
-              <h2>Lumpsum Investment Calculator</h2>
-              <p className="calculator-intro">Calculate your future wealth with a one-time investment.</p>
+              <h2>Lumpsum Calculator</h2>
+              <p className="calculator-intro">Calculate returns on your one-time investment with compound interest.</p>
 
               {['investment', 'rate', 'tenure'].map((field) => (
                 <div className="input-group" key={field}>

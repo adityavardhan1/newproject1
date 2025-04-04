@@ -2,52 +2,74 @@
 .main-container {
   margin-top: 80px;
   text-align: center;
-  background-color: #f5f7fa;
+  background: linear-gradient(135deg, #9EC6F3 0%, #E8F4FF 100%);
   min-height: 100vh;
   padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .content-wrapper {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  width: 100%;
 }
 
 /* Calculator Layout */
 .sip-calculator {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 30px;
   align-items: start;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Left Content Styles */
 .content-left {
   background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   transition: transform 0.3s ease;
+  width: 100%;
 }
 
 .calculator-box {
   text-align: center;
-  padding: 25px;
+  padding: 20px;
 }
 
 .calculator-box h2 {
   color: #2c3e50;
   margin-bottom: 15px;
-  font-size: 1.8em;
+  font-size: 2em;
   text-align: center;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.calculator-box h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 3px;
 }
 
 .calculator-intro {
   text-align: center;
-  color: #666;
+  color: #546e7a;
   margin: 15px auto 25px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.5;
   max-width: 600px;
   display: block;
@@ -161,13 +183,13 @@ select:focus {
 .reverse-sip-content {
   background: white;
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 16px;
   width: 90%;
-  max-width: 600px;
+  max-width: 800px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
@@ -191,9 +213,11 @@ select:focus {
 .sidebar-right {
   background: white;
   padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   height: fit-content;
+  margin-top: 30px;
+  width: 100%;
 }
 
 .sidebar-heading {
@@ -257,111 +281,14 @@ select:focus {
   transform: translateY(-2px);
 }
 
-/* Responsive Styles */
-@media (max-width: 1200px) {
-  .sip-calculator {
-    grid-template-columns: 1fr;
-  }
-  
-  .sidebar-right {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 768px) {
-  .content-wrapper {
-    padding: 10px;
-  }
-
-  .content-left {
-    padding: 20px;
-  }
-
-  .button-container {
-    flex-direction: column;
-  }
-
-  .calculate-button,
-  .reset-button,
-  .calculator-button,
-  .inflation-button {
-    width: 100%;
-  }
-
-  h1.center {
-    font-size: 2em;
-  }
-
-  .calculator-intro {
-    margin: 10px auto 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-container {
-    padding: 10px;
-  }
-
-  h1.center {
-    font-size: 1.8em;
-  }
-
-  input,
-  select {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .calculator-box {
-    padding: 15px;
-  }
-}
-
-/* Modal styles */
-.reverse-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.reverse-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.close-button {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-}
-
-.close-button:hover {
-  color: #333;
-}
-
+/* Calculator Page Styles */
 .calculator-page {
   padding: 80px 20px 40px;
   min-height: 100vh;
   background: linear-gradient(135deg, #9EC6F3 0%, #E8F4FF 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .calculator-container {
@@ -370,7 +297,8 @@ select:focus {
   background: white;
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .calculator-header {
@@ -382,7 +310,22 @@ select:focus {
 .calculator-header h1 {
   color: #2c3e50;
   font-size: 2em;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.calculator-header h1:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #007bff, #00c6ff);
+  border-radius: 3px;
 }
 
 .calculator-description {
@@ -505,48 +448,67 @@ select:focus {
   font-style: italic;
 }
 
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .content-wrapper {
+    padding: 15px;
+  }
+}
+
 @media (max-width: 768px) {
-  .calculator-page {
-    padding: 60px 15px 30px;
+  .content-wrapper {
+    padding: 10px;
   }
 
-  .calculator-container {
+  .content-left {
     padding: 20px;
-  }
-
-  .calculator-header h1 {
-    font-size: 1.8em;
-  }
-
-  .calculator-description {
-    font-size: 1em;
   }
 
   .button-container {
     flex-direction: column;
   }
 
-  .calculate-button, .reset-button {
+  .calculate-button,
+  .reset-button,
+  .calculator-button,
+  .inflation-button {
     width: 100%;
+  }
+
+  h1.center {
+    font-size: 1.8em;
+  }
+
+  .calculator-intro {
+    margin: 10px auto 20px;
+    font-size: 1rem;
+  }
+  
+  .calculator-box h2 {
+    font-size: 1.6em;
   }
 }
 
 @media (max-width: 480px) {
-  .calculator-header h1 {
+  .main-container {
+    padding: 10px;
+  }
+
+  h1.center {
     font-size: 1.5em;
   }
 
-  .calculator-description {
-    font-size: 0.9em;
-  }
-
-  .input-group input {
+  input,
+  select {
+    font-size: 14px;
     padding: 10px;
-    font-size: 14px;
   }
 
-  .calculate-button, .reset-button {
-    padding: 10px 20px;
-    font-size: 14px;
+  .calculator-box {
+    padding: 15px;
+  }
+  
+  .calculator-box h2 {
+    font-size: 1.4em;
   }
 }

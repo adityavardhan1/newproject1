@@ -1,8 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import './Sip.css';
-import ReverseLumpsumCalculator from './components/ReverseLumpsum';
-import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
-import TimeCalculator from './components/LumpsumTimeCalculator';
+import '../Sip.css';
 
 function LumpsumCalculator() {
   const [state, setState] = useState({
@@ -13,10 +10,7 @@ function LumpsumCalculator() {
     totalEarnings: 0,
     showResult: false,
     showInflationAdjusted: false,
-    isFirstCalculation: true,
-    showReverseLumpsum: false,
-    showCagrCalculator: false,
-    showTimeCalculator: false
+    isFirstCalculation: true
   });
 
   const formatAmount = useCallback((num) => {
@@ -44,8 +38,11 @@ function LumpsumCalculator() {
     }
 
     const r = parsedRate / 100;
-    const amount = parsedInvestment * Math.pow((1 + r), parsedTenure);
-    const totalEarningsCalc = amount - parsedInvestment;
+    // Formula for annual SIP: P * ((1 + r)^n - 1) / r
+    // where P is the annual investment, r is the rate, and n is the number of years
+    const amount = parsedInvestment * ((Math.pow(1 + r, parsedTenure) - 1) / r);
+    const totalInvestment = parsedInvestment * parsedTenure;
+    const totalEarningsCalc = amount - totalInvestment;
 
     setState(prev => ({
       ...prev,
@@ -74,10 +71,7 @@ function LumpsumCalculator() {
       totalEarnings: 0,
       showResult: false,
       showInflationAdjusted: false,
-      isFirstCalculation: true,
-      showReverseLumpsum: false,
-      showCagrCalculator: false,
-      showTimeCalculator: false
+      isFirstCalculation: true
     });
   }, []);
 
@@ -148,54 +142,7 @@ function LumpsumCalculator() {
               )}
             </div>
           </div>
-
-          <div className="sidebar-right">
-            <h3 className="sidebar-heading">Already know your goal amount?</h3>
-            <button 
-              className="reverse-sip-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showReverseLumpsum: !prev.showReverseLumpsum 
-              }))}
-            >
-              {state.showReverseLumpsum ? 'Hide Required One Time Investment Calculator' : 'Calculate Your Required One Time Investment'}
-            </button>
-            <button 
-              className="cagr-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showCagrCalculator: !prev.showCagrCalculator 
-              }))}
-            >
-              {state.showCagrCalculator ? 'Hide Required CAGR Calculator' : 'Calculate Your Required CAGR'}
-            </button>
-            <button 
-              className="time-button" 
-              onClick={() => setState(prev => ({ 
-                ...prev, 
-                showTimeCalculator: !prev.showTimeCalculator 
-              }))}
-            >
-              {state.showTimeCalculator ? 'Hide Required Time Calculator' : 'Calculate Your Required Time'}
-            </button>
-          </div>
         </div>
-
-        {state.showReverseLumpsum && (
-  <ReverseLumpsumCalculator 
-    onClose={() => setState(prev => ({ ...prev, showReverseLumpsum: false }))} 
-  />
-)}
-         {state.showCagrCalculator && (
-          <LumpsumCagrCalculator 
-            onClose={() => setState(prev => ({ ...prev, showCagrCalculator: false }))} 
-          />
-        )}
-        {state.showTimeCalculator && (
-          <TimeCalculator 
-            onClose={() => setState(prev => ({ ...prev, showTimeCalculator: false }))} 
-          />
-        )}
       </div>
     </div>
   );

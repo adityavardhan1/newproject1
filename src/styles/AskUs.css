@@ -1,8 +1,7 @@
 .home-container {
   min-height: 100vh;
   padding: 100px 20px 40px;
-  background: linear-gradient(135deg, #6b90bb 0%, #a9bdd1 100%);
-  border-color: #7c8d9d;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
 .home-content {
@@ -100,7 +99,3 @@
     gap: 20px;
   }
 } 
-
-.boxHeading {
-  color: #0f2842;
-}

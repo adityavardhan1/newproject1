@@ -9,9 +9,7 @@ import FIRE from './pages/FIRE';
 import Login from './pages/Login';
 import Market from './pages/Market';
 import Signup from './pages/Signup';
-import SupportUs from './pages/SupportUs';
-import AskUs from './pages/AskUs';
-import ContactUs from './pages/ContactUs';
+import ContactUs from './components/ContactUs';
 import SipCalculator from './components/SipCalculator';
 import LumpsumCalculator from './components/LumpsumCalculator';
 import TimeCalculator from './components/TimeCalculator';
@@ -20,6 +18,8 @@ import CagrCalculator from './components/CagrCalculator';
 import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
 import OneTimeInvestmentCalculator from './components/OneTimeInvestmentCalculator';
 import About from './components/About';
+import Footer from './components/Footer';
+import AskUs from './components/AskUs';
 
 function App() {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -34,6 +34,7 @@ function App() {
   }, []);
 
   return (
+    <div>
     <div className="App">
       {!isMobile && <Navbar />}
       {isMobile && <HamburgerMenu />}
@@ -56,12 +57,13 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Market" element={<Market />} />
           <Route path="/Signup" element={<Signup />} />
-          <Route path="/SupportUs" element={<SupportUs />} />
           <Route path="/AskUs" element={<AskUs />} />
           <Route path="/ContactUs" element={<ContactUs />} />
         </Routes>
       </div>
     </div>
+  <Footer />
+  </div>  
   );
 }
 

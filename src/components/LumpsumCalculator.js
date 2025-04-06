@@ -1,7 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import '../Sip.css';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 function LumpsumCalculator() {
+  useScrollToTop();
+
   const [state, setState] = useState({
     investment: '',
     rate: '',
@@ -137,6 +140,14 @@ function LumpsumCalculator() {
                       {calculateInflationAdjusted(state.futureValue)}
                     </p>
                   )}
+                  <p className="note">* This is an approximate calculation. Actual returns may vary based on market conditions.</p>
+                  
+                  <p className="note">
+                    This calculator is for educational purposes only and should not be considered as financial advice.
+                    Investment returns are not guaranteed, and past performance does not guarantee future results.
+                    The calculation assumes a constant rate of return, which may not be realistic in actual market conditions.
+                    Always consult with a qualified financial advisor before making investment decisions.
+                  </p>
                 </div>
               )}
             </div>

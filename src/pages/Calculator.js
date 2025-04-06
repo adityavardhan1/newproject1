@@ -52,6 +52,16 @@ function Calculator() {
           <h2>Lumpsum CAGR Calculator</h2>
           <p>Calculate CAGR for your one-time investments</p>
         </Link>
+        <Link to="/Calculator/LumpsumCagrCalculator" className="calculator-card">
+          <div className="calculator-icon">🔄</div>
+          <h2>EMI Calculator</h2>
+          <p>Calculate EMI</p>
+        </Link>
+        <Link to="/Calculator/LumpsumCagrCalculator" className="calculator-card">
+          <div className="calculator-icon">📊</div>
+          <h2>SWP Calculator</h2>
+          <p>Calculate systematic Withdrawl Plan</p>
+        </Link>
       </div>
     </div>
   );

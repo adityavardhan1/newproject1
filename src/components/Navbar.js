@@ -37,10 +37,10 @@ const Navbar = () => {
             <Link to="/Calculator" className="nav-link">Calculators</Link>
           </li>
           <li className="nav-item">
-            <Link to="/Market" className="nav-link">Market</Link>
+            <Link to="./AskUs" className="nav-link">Ask Us</Link>
           </li>
           <li className="nav-item">
-            <Link to="/FIRE" className="nav-link">FIRE</Link>
+            <Link to="/ContactUs" className="nav-link">Contact Us</Link>
           </li>
           <li className="nav-item">
             <Link to="/about" className="nav-link">About</Link>

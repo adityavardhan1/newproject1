@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import '../Sip.css';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 function OneTimeInvestmentCalculator() {
+  useScrollToTop();
+
   const [state, setState] = useState({
     investment: '',
     rate: '',
@@ -155,6 +158,14 @@ function OneTimeInvestmentCalculator() {
                       </p>
                     </div>
                   )}
+                  <p className="note">* This is an approximate calculation. Actual returns may vary based on market conditions.</p>
+                  
+                  <p className="note">
+                    This calculator is for educational purposes only and should not be considered as financial advice.
+                    Investment returns are not guaranteed, and past performance does not guarantee future results.
+                    The calculation assumes a constant rate of return, which may not be realistic in actual market conditions.
+                    Always consult with a qualified financial advisor before making investment decisions.
+                  </p>
                 </div>
               )}
             </div>

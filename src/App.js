@@ -17,6 +17,8 @@ import StepupTimeCalculator from './components/StepupTimeCalculator';
 import CagrCalculator from './components/CagrCalculator';
 import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
 import OneTimeInvestmentCalculator from './components/OneTimeInvestmentCalculator';
+import EmiCalculator from './components/EmiCalculator';
+import SwpCalculator from './components/SwpCalculator';
 import About from './components/About';
 import Footer from './components/Footer';
 import AskUs from './components/AskUs';
@@ -34,36 +36,38 @@ function App() {
   }, []);
 
   return (
-    <div>
-    <div className="App">
-      {!isMobile && <Navbar />}
-      {isMobile && <HamburgerMenu />}
-      <div className={`main-content ${isMobile ? 'mobile-content' : ''}`}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/lumpsum" element={<LumpsumCalculator />} />
-          <Route path="/sip" element={<SipCalculator />} />
-          <Route path="/time" element={<TimeCalculator />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/Calculator" element={<Calculator />} />
-          <Route path="/Calculator/SipCalculator" element={<SipCalculator />} />
-          <Route path="/Calculator/LumpsumCalculator" element={<LumpsumCalculator />} />
-          <Route path="/Calculator/TimeCalculator" element={<TimeCalculator />} />
-          <Route path="/Calculator/StepupTimeCalculator" element={<StepupTimeCalculator />} />
-          <Route path="/Calculator/CagrCalculator" element={<CagrCalculator />} />
-          <Route path="/Calculator/LumpsumCagrCalculator" element={<LumpsumCagrCalculator />} />
-          <Route path="/Calculator/OneTimeInvestmentCalculator" element={<OneTimeInvestmentCalculator />} />
-          <Route path="/FIRE" element={<FIRE />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Market" element={<Market />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/AskUs" element={<AskUs />} />
-          <Route path="/ContactUs" element={<ContactUs />} />
-        </Routes>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="App" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {!isMobile && <Navbar />}
+        {isMobile && <HamburgerMenu />}
+        <div className={`main-content ${isMobile ? 'mobile-content' : ''}`} style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/lumpsum" element={<LumpsumCalculator />} />
+            <Route path="/sip" element={<SipCalculator />} />
+            <Route path="/time" element={<TimeCalculator />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/Calculator" element={<Calculator />} />
+            <Route path="/Calculator/SipCalculator" element={<SipCalculator />} />
+            <Route path="/Calculator/LumpsumCalculator" element={<LumpsumCalculator />} />
+            <Route path="/Calculator/TimeCalculator" element={<TimeCalculator />} />
+            <Route path="/Calculator/StepupTimeCalculator" element={<StepupTimeCalculator />} />
+            <Route path="/Calculator/CagrCalculator" element={<CagrCalculator />} />
+            <Route path="/Calculator/LumpsumCagrCalculator" element={<LumpsumCagrCalculator />} />
+            <Route path="/Calculator/OneTimeInvestmentCalculator" element={<OneTimeInvestmentCalculator />} />
+            <Route path="/Calculator/EmiCalculator" element={<EmiCalculator />} />
+            <Route path="/Calculator/SwpCalculator" element={<SwpCalculator />} />
+            <Route path="/FIRE" element={<FIRE />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Market" element={<Market />} />
+            <Route path="/Signup" element={<Signup />} />
+            <Route path="/AskUs" element={<AskUs />} />
+            <Route path="/ContactUs" element={<ContactUs />} />
+          </Routes>
+        </div>
       </div>
-    </div>
-  <Footer />
-  </div>  
+      <Footer />
+    </div>  
   );
 }
 

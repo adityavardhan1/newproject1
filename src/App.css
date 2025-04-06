@@ -46,6 +46,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: 80px; /* Add padding to ensure content doesn't get hidden behind footer */
 }
 
 .mobile-content {
@@ -56,6 +57,7 @@
 @media (max-width: 768px) {
   .main-content {
     padding: 15px;
+    padding-bottom: 60px;
   }
 }
 

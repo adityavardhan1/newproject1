@@ -38,7 +38,7 @@ function Calculator() {
         <Link to="/Calculator/StepupCalculator" className="calculator-card">
           <div className="calculator-icon">🔄</div>
           <h2>Step Up SIP Calculator</h2>
-          <p>CCalculate your future corpus with increasing monthly investments</p>
+          <p>Calculate your future corpus with increasing monthly investments</p>
         </Link>
 
         <Link to="/Calculator/CagrCalculator" className="calculator-card">

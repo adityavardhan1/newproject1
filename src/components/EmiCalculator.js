@@ -17,9 +17,18 @@ function EmiCalculator() {
   });
 
   const formatAmount = useCallback((num) => {
-    return num >= 10000000 
-      ? `₹${(num / 10000000).toFixed(2)} Cr` 
-      : `₹${(num / 100000).toFixed(2)} Lakh`;
+    const formattedNumber = new Intl.NumberFormat('en-IN').format(Math.round(num));
+    const inThousands = (num / 1000).toFixed(2);
+    const inLakhs = (num / 100000).toFixed(2);
+    const inCrores = (num / 10000000).toFixed(2);
+    
+    if (num >= 10000000) {
+      return `${formattedNumber} (₹${inCrores} Cr)`;
+    } else if (num >= 100000) {
+      return `${formattedNumber} (₹${inLakhs} Lakh)`;
+    } else {
+      return `${formattedNumber} (₹${inThousands} Thousand)`;
+    }
   }, []);
 
   const calculateEmi = useCallback((isButtonClick = false) => {
@@ -77,32 +86,45 @@ function EmiCalculator() {
           <div className="content-left">
             <div className="calculator-box">
               <h2>EMI Calculator</h2>
-              <p className="calculator-intro">Calculate your Equated Monthly Installment (EMI) for loans.</p>
+              <p className="calculator-intro">
+                Calculate your Equated Monthly Installment (EMI) for loans
+              </p>
 
-              {[
-                { field: 'loanAmount', label: 'Loan Amount', placeholder: '100000' },
-                { field: 'interestRate', label: 'Annual Interest Rate (%)', placeholder: '10' },
-                { field: 'loanTerm', label: 'Loan Term (Years)', placeholder: '5' }
-              ].map(({ field, label, placeholder }) => (
-                <div className="input-group" key={field}>
-                  <label htmlFor={field}>{label} *</label>
-                  <input
-                    type="text"
-                    id={field}
-                    placeholder={`Ex: ${placeholder}`}
-                    value={state[field]}
-                    onChange={(e) => handleInputChange(e.target.value, field)}
-                    autoComplete="off"
-                  />
-                </div>
-              ))}
+              <div className="input-group">
+                <label htmlFor="loanAmount">Loan Amount (₹)</label>
+                <input
+                  type="text"
+                  id="loanAmount"
+                  value={state.loanAmount}
+                  onChange={(e) => handleInputChange(e.target.value, 'loanAmount')}
+                  placeholder="Enter loan amount"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="interestRate">Annual Interest Rate (%)</label>
+                <input
+                  type="text"
+                  id="interestRate"
+                  value={state.interestRate}
+                  onChange={(e) => handleInputChange(e.target.value, 'interestRate')}
+                  placeholder="Enter annual interest rate"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="loanTerm">Loan Term (Years)</label>
+                <input
+                  type="text"
+                  id="loanTerm"
+                  value={state.loanTerm}
+                  onChange={(e) => handleInputChange(e.target.value, 'loanTerm')}
+                  placeholder="Enter loan term in years"
+                />
+              </div>
 
               <div className="button-container">
-                <button 
-                  className="calculate-button" 
-                  onClick={() => calculateEmi(true)} 
-                  disabled={!state.loanAmount || !state.interestRate || !state.loanTerm}
-                >
+                <button className="calculate-button" onClick={() => calculateEmi(true)}>
                   Calculate
                 </button>
                 <button className="reset-button" onClick={handleReset}>
@@ -112,6 +134,7 @@ function EmiCalculator() {
 
               {state.showResult && (
                 <div className="result-container">
+                  <h2>Results</h2>
                   <p>Monthly EMI: {formatAmount(state.emi)}</p>
                   <p>Total Interest: {formatAmount(state.totalInterest)}</p>
                   <p>Total Payment: {formatAmount(state.totalPayment)}</p>

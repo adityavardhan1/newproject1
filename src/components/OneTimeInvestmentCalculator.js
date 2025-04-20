@@ -9,7 +9,9 @@ function OneTimeInvestmentCalculator() {
     investment: '',
     rate: '',
     tenure: '',
+    inflationRate: '7', // Default inflation rate
     futureValue: 0,
+    totalInvestment: 0,
     totalEarnings: 0,
     showResult: false,
     showInflationAdjusted: false,
@@ -17,21 +19,30 @@ function OneTimeInvestmentCalculator() {
   });
 
   const formatAmount = useCallback((num) => {
-    return num >= 10000000 
-      ? `₹${(num / 10000000).toFixed(2)} Cr` 
-      : `₹${(num / 100000).toFixed(2)} Lakh`;
+    const formattedNumber = new Intl.NumberFormat('en-IN').format(Math.round(num));
+    const inThousands = (num / 1000).toFixed(2);
+    const inLakhs = (num / 100000).toFixed(2);
+    const inCrores = (num / 10000000).toFixed(2);
+    
+    if (num >= 10000000) {
+      return `${formattedNumber} (₹${inCrores} Cr)`;
+    } else if (num >= 100000) {
+      return `${formattedNumber} (₹${inLakhs} Lakh)`;
+    } else {
+      return `${formattedNumber} (₹${inThousands} Thousand)`;
+    }
   }, []);
 
-  const calculateInflationAdjusted = useCallback((amount, tenure) => {
-    const inflationRate = 0.07;
-    const years = parseFloat(tenure) || 0;
+  const calculateInflationAdjusted = useCallback((amount) => {
+    const inflationRate = parseFloat(state.inflationRate) / 100;
+    const years = parseFloat(state.tenure) || 0;
     return formatAmount(amount / Math.pow(1 + inflationRate, years));
-  }, [formatAmount]);
+  }, [state.tenure, state.inflationRate, formatAmount]);
 
-  const calculateReturns = useCallback((investment, rate, tenure, isButtonClick = false) => {
-    const parsedInvestment = parseFloat(investment.replace(/,/g, "")) || 0;
-    const parsedRate = parseFloat(rate) || 0;
-    const parsedTenure = parseFloat(tenure) || 0;
+  const calculateReturns = useCallback((isButtonClick = false) => {
+    const parsedInvestment = parseFloat(state.investment.replace(/,/g, "")) || 0;
+    const parsedRate = parseFloat(state.rate) || 0;
+    const parsedTenure = parseFloat(state.tenure) || 0;
 
     if (parsedInvestment <= 0 || parsedRate <= 0 || parsedTenure <= 0) {
       if (isButtonClick) {
@@ -41,36 +52,41 @@ function OneTimeInvestmentCalculator() {
     }
 
     const r = parsedRate / 100;
-    // Formula for one-time investment: P * (1 + r)^n
-    // where P is the investment amount, r is the rate, and n is the number of years
-    const amount = parsedInvestment * Math.pow(1 + r, parsedTenure);
-    const totalInvestment = parsedInvestment;
+    const n = parsedTenure;
+    const P = parsedInvestment;
+
+    // One-time investment formula: P * (1 + r)^n
+    const amount = P * Math.pow(1 + r, n);
+    const totalInvestment = P;
     const totalEarningsCalc = amount - totalInvestment;
 
     setState(prev => ({
       ...prev,
       futureValue: amount,
+      totalInvestment: totalInvestment,
       totalEarnings: totalEarningsCalc,
       showResult: true,
       isFirstCalculation: isButtonClick ? false : prev.isFirstCalculation
     }));
-  }, []);
+  }, [state.investment, state.rate, state.tenure]);
 
   const handleInputChange = useCallback((value, field) => {
     if (/^\d*\.?\d*$/.test(value)) {
       setState(prev => ({ ...prev, [field]: value }));
       if (!state.isFirstCalculation) {
-        calculateReturns(state.investment, state.rate, state.tenure, false);
+        calculateReturns(false);
       }
     }
-  }, [state.isFirstCalculation, calculateReturns, state.investment, state.rate, state.tenure]);
+  }, [state.isFirstCalculation, calculateReturns]);
 
   const handleReset = useCallback(() => {
     setState({
       investment: '',
       rate: '',
       tenure: '',
+      inflationRate: '7',
       futureValue: 0,
+      totalInvestment: 0,
       totalEarnings: 0,
       showResult: false,
       showInflationAdjusted: false,
@@ -85,35 +101,46 @@ function OneTimeInvestmentCalculator() {
           <div className="content-left">
             <div className="calculator-box">
               <h2>One-Time Investment Return Calculator</h2>
-              <p className="calculator-intro">Calculate returns on your one-time investment over a specific time period.</p>
+              <p className="calculator-intro">
+                Calculate returns on your one-time investment over a specific time period
+              </p>
+              
+              <div className="input-group">
+                <label htmlFor="investment">Investment Amount (₹)</label>
+                <input
+                  type="text"
+                  id="investment"
+                  value={state.investment}
+                  onChange={(e) => handleInputChange(e.target.value, 'investment')}
+                  placeholder="Enter investment amount"
+                />
+              </div>
 
-              {['investment', 'rate', 'tenure'].map((field) => (
-                <div className="input-group" key={field}>
-                  <label htmlFor={field}>
-                    {{
-                      investment: 'Investment Amount',
-                      rate: 'Expected Rate of Return (P.A)',
-                      tenure: 'Time Period (in years)'
-                    }[field]} *
-                  </label>
-                  <input
-                    type="text"
-                    id={field}
-                    placeholder={`Ex: ${field === 'investment' ? '100000' : field === 'rate' ? '12' : '10'}`}
-                    value={state[field]}
-                    onChange={(e) => handleInputChange(e.target.value, field)}
-                    autoComplete="off"
-                  />
-                </div>
-              ))}
+              <div className="input-group">
+                <label htmlFor="rate">Expected Annual Return (%)</label>
+                <input
+                  type="text"
+                  id="rate"
+                  value={state.rate}
+                  onChange={(e) => handleInputChange(e.target.value, 'rate')}
+                  placeholder="Enter expected annual return"
+                />
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="tenure">Investment Period (Years)</label>
+                <input
+                  type="text"
+                  id="tenure"
+                  value={state.tenure}
+                  onChange={(e) => handleInputChange(e.target.value, 'tenure')}
+                  placeholder="Enter investment period in years"
+                />
+              </div>
 
               <div className="button-container">
-                <button 
-                  className="calculate-button" 
-                  onClick={() => calculateReturns(state.investment, state.rate, state.tenure, true)} 
-                  disabled={!state.investment || !state.rate || !state.tenure}
-                >
-                  Calculate Returns
+                <button className="calculate-button" onClick={() => calculateReturns(true)}>
+                  Calculate
                 </button>
                 <button className="reset-button" onClick={handleReset}>
                   Reset
@@ -122,44 +149,36 @@ function OneTimeInvestmentCalculator() {
 
               {state.showResult && (
                 <div className="result-container">
-                  <h3>Investment Summary</h3>
-                  <div className="result-grid">
-                    <div className="result-item">
-                      <p className="result-label">Initial Investment</p>
-                      <p className="result-value">{formatAmount(parseFloat(state.investment))}</p>
-                    </div>
-                    <div className="result-item">
-                      <p className="result-label">Future Value</p>
-                      <p className="result-value">{formatAmount(state.futureValue)}</p>
-                    </div>
-                    <div className="result-item">
-                      <p className="result-label">Total Returns</p>
-                      <p className="result-value">{formatAmount(state.totalEarnings)}</p>
-                    </div>
-                    <div className="result-item">
-                      <p className="result-label">Return on Investment</p>
-                      <p className="result-value">{((state.totalEarnings / parseFloat(state.investment)) * 100).toFixed(2)}%</p>
-                    </div>
+                  <h2>Results</h2>
+                  <p>Future Value: {formatAmount(state.futureValue)}</p>
+                  <p>Total Investment: {formatAmount(state.totalInvestment)}</p>
+                  <p>Total Earnings: {formatAmount(state.totalEarnings)}</p>
+                  
+                  <div className="input-group">
+                    <label htmlFor="inflationRate">Inflation Rate (%)</label>
+                    <input
+                      type="text"
+                      id="inflationRate"
+                      value={state.inflationRate}
+                      onChange={(e) => handleInputChange(e.target.value, 'inflationRate')}
+                      placeholder="Enter expected inflation rate"
+                    />
                   </div>
+                  
                   <button 
-                    className="inflation-button" 
-                    onClick={() => setState(prev => ({ 
-                      ...prev, 
-                      showInflationAdjusted: !prev.showInflationAdjusted 
-                    }))}
+                    className="calculate-button" 
+                    onClick={() => setState(prev => ({ ...prev, showInflationAdjusted: !prev.showInflationAdjusted }))}
+                    style={{ marginTop: '10px' }}
                   >
                     {state.showInflationAdjusted ? 'Hide' : 'Show'} Inflation Adjusted Value
                   </button>
+                  
                   {state.showInflationAdjusted && (
-                    <div className="inflation-adjusted">
-                      <p>
-                        Inflation Adjusted Future Value (7% p.a.): 
-                        {calculateInflationAdjusted(state.futureValue, state.tenure)}
-                      </p>
-                    </div>
+                    <p>
+                      Inflation Adjusted Value ({state.inflationRate}% p.a.): {calculateInflationAdjusted(state.futureValue)}
+                    </p>
                   )}
                   <p className="note">* This is an approximate calculation. Actual returns may vary based on market conditions.</p>
-                  
                   <p className="note">
                     This calculator is for educational purposes only and should not be considered as financial advice.
                     Investment returns are not guaranteed, and past performance does not guarantee future results.

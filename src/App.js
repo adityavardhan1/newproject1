@@ -13,7 +13,7 @@ import ContactUs from './components/ContactUs';
 import SipCalculator from './components/SipCalculator';
 import LumpsumCalculator from './components/LumpsumCalculator';
 import TimeCalculator from './components/TimeCalculator';
-import StepupTimeCalculator from './components/StepupTimeCalculator';
+import StepupCalculator from './components/StepupCalculator';
 import CagrCalculator from './components/CagrCalculator';
 import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
 import OneTimeInvestmentCalculator from './components/OneTimeInvestmentCalculator';
@@ -51,7 +51,7 @@ function App() {
             <Route path="/Calculator/SipCalculator" element={<SipCalculator />} />
             <Route path="/Calculator/LumpsumCalculator" element={<LumpsumCalculator />} />
             <Route path="/Calculator/TimeCalculator" element={<TimeCalculator />} />
-            <Route path="/Calculator/StepupTimeCalculator" element={<StepupTimeCalculator />} />
+            <Route path="/Calculator/StepupCalculator" element={<StepupCalculator />} />
             <Route path="/Calculator/CagrCalculator" element={<CagrCalculator />} />
             <Route path="/Calculator/LumpsumCagrCalculator" element={<LumpsumCagrCalculator />} />
             <Route path="/Calculator/OneTimeInvestmentCalculator" element={<OneTimeInvestmentCalculator />} />

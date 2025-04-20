@@ -35,10 +35,10 @@ function Calculator() {
           <p>Calculate time needed for your SIP investment to reach your goal</p>
         </Link>
 
-        <Link to="/Calculator/StepupTimeCalculator" className="calculator-card">
+        <Link to="/Calculator/StepupCalculator" className="calculator-card">
           <div className="calculator-icon">🔄</div>
-          <h2>Time Duration Calculator - Regular Investment</h2>
-          <p>Calculate time needed for your regular investment goal</p>
+          <h2>Step Up SIP Calculator</h2>
+          <p>CCalculate your future corpus with increasing monthly investments</p>
         </Link>
 
         <Link to="/Calculator/CagrCalculator" className="calculator-card">

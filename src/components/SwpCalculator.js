@@ -14,7 +14,8 @@ function SwpCalculator() {
     totalWithdrawal: 0,
     remainingCorpus: 0,
     showResult: false,
-    isFirstCalculation: true
+    isFirstCalculation: true,
+    depletionTime: null
   });
 
   const formatAmount = useCallback((num) => {
@@ -30,6 +31,15 @@ function SwpCalculator() {
     } else {
       return `${formattedNumber} (₹${inThousands} Thousand)`;
     }
+  }, []);
+
+  const calculateDepletionTime = useCallback((corpus, monthlyWithdrawal, monthlyRate) => {
+    // Formula: n = log(1 - (P*r)/PMT) / log(1 + r)
+    // where P is corpus, PMT is monthly withdrawal, r is monthly rate
+    const n = Math.log(1 - (corpus * monthlyRate) / monthlyWithdrawal) / Math.log(1 + monthlyRate);
+    const years = Math.floor(n / 12);
+    const months = Math.ceil(n % 12);
+    return { years, months };
   }, []);
 
   const calculateSwp = useCallback((isButtonClick = false) => {
@@ -50,18 +60,58 @@ function SwpCalculator() {
     const monthlyWithdrawalAmount = withdrawal;
     const totalWithdrawalAmount = monthlyWithdrawalAmount * numberOfMonths;
     
-    // Calculate remaining corpus using the formula: P = PMT * ((1 - (1 + r)^-n) / r)
-    // where P is the corpus, PMT is monthly withdrawal, r is monthly rate, n is number of months
-    const requiredCorpus = monthlyWithdrawalAmount * ((1 - Math.pow(1 + monthlyRate, -numberOfMonths)) / monthlyRate);
-    const remainingCorpusAmount = corpus - requiredCorpus;
+    console.log('Initial values:', {
+      corpus,
+      monthlyWithdrawalAmount,
+      monthlyRate,
+      numberOfMonths
+    });
+    
+    // Calculate month by month to track corpus depletion
+    let currentCorpus = corpus;
+    let monthsToDepletion = null;
+    
+    for (let month = 1; month <= numberOfMonths; month++) {
+      // Add monthly interest
+      const interest = currentCorpus * monthlyRate;
+      currentCorpus = currentCorpus + interest;
+      // Subtract monthly withdrawal
+      currentCorpus = currentCorpus - monthlyWithdrawalAmount;
+      
+      console.log(`Month ${month}:`, {
+        interest,
+        afterInterest: currentCorpus + monthlyWithdrawalAmount,
+        afterWithdrawal: currentCorpus
+      });
+      
+      // If corpus is depleted, record the month
+      if (currentCorpus <= 0 && monthsToDepletion === null) {
+        monthsToDepletion = month;
+      }
+    }
+
+    // Calculate depletion time if corpus was depleted
+    let depletionTime = null;
+    if (monthsToDepletion !== null) {
+      const years = Math.floor(monthsToDepletion / 12);
+      const months = monthsToDepletion % 12;
+      depletionTime = { years, months };
+    }
+
+    console.log('Final values:', {
+      currentCorpus,
+      monthsToDepletion,
+      depletionTime
+    });
 
     setState(prev => ({
       ...prev,
       monthlyWithdrawal: monthlyWithdrawalAmount,
       totalWithdrawal: totalWithdrawalAmount,
-      remainingCorpus: remainingCorpusAmount,
+      remainingCorpus: currentCorpus > 0 ? currentCorpus : 0,
       showResult: true,
-      isFirstCalculation: isButtonClick ? false : prev.isFirstCalculation
+      isFirstCalculation: isButtonClick ? false : prev.isFirstCalculation,
+      depletionTime
     }));
   }, [state.corpus, state.withdrawal, state.rate, state.tenure]);
 
@@ -84,7 +134,8 @@ function SwpCalculator() {
       totalWithdrawal: 0,
       remainingCorpus: 0,
       showResult: false,
-      isFirstCalculation: true
+      isFirstCalculation: true,
+      depletionTime: null
     });
   }, []);
 
@@ -157,7 +208,15 @@ function SwpCalculator() {
                   <h2>Results</h2>
                   <p>Monthly Withdrawal: {formatAmount(state.monthlyWithdrawal)}</p>
                   <p>Total Withdrawal: {formatAmount(state.totalWithdrawal)}</p>
-                  <p>Remaining Corpus: {formatAmount(state.remainingCorpus)}</p>
+                  {state.remainingCorpus > 0 && (
+                    <p>Remaining Corpus: {formatAmount(state.remainingCorpus)}</p>
+                  )}
+                  {state.depletionTime && (
+                    <p className="warning">
+                      Warning: Your corpus will be depleted in {Math.abs(state.depletionTime.years)} years and {Math.abs(state.depletionTime.months)} months. 
+                      Please reduce your withdrawal amount or increase your corpus to sustain the withdrawals.
+                    </p>
+                  )}
                   <p className="note">* This is an approximate calculation. Actual returns may vary based on market conditions.</p>
                   <p className="note">
                     This calculator is for educational purposes only and should not be considered as financial advice.

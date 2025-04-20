@@ -13,7 +13,7 @@ import ContactUs from './components/ContactUs';
 import SipCalculator from './components/SipCalculator';
 import LumpsumCalculator from './components/LumpsumCalculator';
 import TimeCalculator from './components/TimeCalculator';
-import StepupCalculator from './components/StepupCalculator';
+import StepupCalculator from './components/StepUpCalculator';
 import CagrCalculator from './components/CagrCalculator';
 import LumpsumCagrCalculator from './components/LumpsumCagrCalculator';
 import OneTimeInvestmentCalculator from './components/OneTimeInvestmentCalculator';

@@ -1,7 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import '../Sip.css';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 function CagrCalculator() {
+  useScrollToTop();
+  
+  const formatAmount = useCallback((num) => {
+    const formattedNumber = new Intl.NumberFormat('en-IN').format(Math.round(num));
+    const inThousands = (num / 1000).toFixed(2);
+    const inLakhs = (num / 100000).toFixed(2);
+    const inCrores = (num / 10000000).toFixed(2);
+    
+    if (num >= 10000000) {
+      return `${formattedNumber} (₹${inCrores} Cr)`;
+    } else if (num >= 100000) {
+      return `${formattedNumber} (₹${inLakhs} Lakh)`;
+    } else {
+      return `${formattedNumber} (₹${inThousands} Thousand)`;
+    }
+  }, []);
+
   const initialState = {
     initialValue: '',
     finalValue: '',
@@ -104,10 +122,11 @@ function CagrCalculator() {
                 <div className="result-container">
                   <h2>Results</h2>
                   <p>CAGR: {state.cagr.toFixed(2)}%</p>
-                  <p>Initial Investment: ₹{parseFloat(state.initialValue).toLocaleString('en-IN')}</p>
-                  <p>Final Value: ₹{parseFloat(state.finalValue).toLocaleString('en-IN')}</p>
+                  <p>Initial Investment: {formatAmount(parseFloat(state.initialValue))}</p>
+                  <p>Final Value: {formatAmount(parseFloat(state.finalValue))}</p>
                   <p>Time Period: {state.timePeriod} years</p>
-                  <p className="note">This is the annual rate at which your investment has grown over the specified time period.</p>
+                  <p className="note">* This is an approximate calculation. Actual CAGR may vary based on market conditions.</p>
+                  <p className="note">This calculator is for educational purposes only. The actual CAGR of your investment may vary based on market conditions, fees, and other factors. Please consult with a financial advisor for personalized advice.</p>
                 </div>
               )}
             </div>

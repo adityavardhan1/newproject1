@@ -11,12 +11,9 @@
   
   /* Calculator Hub Styles */
   .calculator-hub {
-    padding: 120px 20px 40px;
-    max-width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-    min-height: calc(100vh - 80px);
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 100px 20px 40px;
+    background: white;
   }
 
   .calculator-hub h1 {
@@ -27,89 +24,101 @@
   }
 
   .hub-description {
-    color: #666;
-    font-size: 1.2em;
-    margin-bottom: 40px;
+    color: #546e7a;
+    font-size: 1.2rem;
     max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 20px auto;
     line-height: 1.6;
+    text-align: center;
+    font-weight: 400;
   }
 
   .calculator-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    padding: 20px;
-    margin-top: 20px;
+    margin-top: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .calculator-card {
     background: white;
-    border-radius: 12px;
     padding: 30px;
-    text-decoration: none;
+    border-radius: 16px;
+    text-decoration: none !important;
     color: inherit;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
   }
 
   .calculator-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    text-decoration: none !important;
+  }
+
+  .calculator-card:focus {
+    text-decoration: none !important;
+  }
+
+  .calculator-card:active {
+    text-decoration: none !important;
+  }
+
+  .calculator-card:visited {
+    text-decoration: none !important;
+  }
+
+  /* Target the Link component specifically */
+  a.calculator-card {
+    text-decoration: none !important;
+  }
+
+  a.calculator-card:hover {
+    text-decoration: none !important;
+  }
+
+  a.calculator-card:focus {
+    text-decoration: none !important;
+  }
+
+  a.calculator-card:active {
+    text-decoration: none !important;
+  }
+
+  a.calculator-card:visited {
+    text-decoration: none !important;
   }
 
   .calculator-icon {
-    font-size: 2.5em;
+    font-size: 2.5rem;
     margin-bottom: 20px;
   }
 
   .calculator-card h2 {
     color: #2c3e50;
     margin-bottom: 15px;
-    font-size: 1.5em;
-    text-align: center;
+    font-size: 1.5rem;
   }
 
   .calculator-card p {
-    color: #666;
-    font-size: 1em;
+    color: #546e7a;
     line-height: 1.5;
-    text-align: center;
   }
 
   @media (max-width: 768px) {
     .calculator-hub {
-      padding: 100px 15px 30px;
-    }
-
-    .calculator-hub h1 {
-      font-size: 2em;
-    }
-
-    .hub-description {
-      font-size: 1.1em;
+      padding: 20px 10px;
     }
 
     .calculator-grid {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      padding: 15px;
     }
 
     .calculator-card {
       padding: 20px;
-      min-height: 180px;
-    }
-
-    .calculator-icon {
-      font-size: 2em;
     }
   }
 

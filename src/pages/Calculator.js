@@ -31,8 +31,8 @@ function Calculator() {
 
         <Link to="/Calculator/TimeCalculator" className="calculator-card">
           <div className="calculator-icon">⏳</div>
-          <h2>Time Duration Calculator - One Time Investment</h2>
-          <p>Calculate time needed for your one-time investment goal</p>
+          <h2>SIP Time Duration Calculator</h2>
+          <p>Calculate time needed for your SIP investment to reach your goal</p>
         </Link>
 
         <Link to="/Calculator/StepupTimeCalculator" className="calculator-card">

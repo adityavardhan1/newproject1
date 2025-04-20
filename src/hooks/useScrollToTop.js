@@ -2,15 +2,18 @@ import { useEffect } from 'react';
 
 const useScrollToTop = () => {
   useEffect(() => {
-    // Small delay to ensure the component is fully mounted
-    const timeoutId = setTimeout(() => {
+    // Immediate scroll
+    window.scrollTo(0, 0);
+    
+    // Smooth scroll after a delay
+    const timer = setTimeout(() => {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
-    }, 100);
+    }, 300);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timer);
   }, []);
 };
 

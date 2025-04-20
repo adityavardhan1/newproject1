@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import '../Sip.css';
+import useScrollToTop from '../hooks/useScrollToTop';
 
 function CagrCalculator() {
+  useScrollToTop();
+  
   const initialState = {
     initialValue: '',
     finalValue: '',
